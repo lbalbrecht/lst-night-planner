@@ -1,3 +1,7 @@
+var mainWindow = document.querySelector("#main-window");
+var searchByRecipes = document.querySelector("#recipeToSearch");
+var searchRecBtn = document.querySelector("#input-field");
+
 //HTML / CSS
 //Utilize Materialize CSS framework for page design and layout
 // Header/jumbotron remains constant throughout page changes
@@ -24,9 +28,7 @@
 
 //summary page gives overview of the results that have been selected, can hover/click for more information about their selections
 
-
-
-//getStarted() 
+//getStarted()
 // intitial function ran on page load, generates description of the web app and button that begins the series of forms for the user by calling displayRecipeOptions()
 
 // displayRecipeOptions()
@@ -38,21 +40,93 @@
 // savePantry()
 // allows the user to add food items to their pantry list and save them to local storage
 
-
 // updatePantry()  and removeItem()??
 //updates/generates the list of user pantry items on screen, also used to remove items from the list
 
 // recipeSearch()
 //initially low functionality that will be built out with options if time permits, generates description and input form for search term and button to submit
+function recipeSearch() {
+    //create a div row for the page description
+    mainWindow.innerHTML="";
+  var newRow = document.createElement("div");
+  newRow.classList = "row center-align";
+  mainWindow.appendChild(newRow);
+  var description = document.createElement("p");
+  description.textContent =
+    "Looks like you already have a recipe in mind that you would like to make for dinner! In that case, all you need to do is put the name of recipe you'd like to find in the field below and hit the Search button!";
+  description.classList = "col s6 offset-s3";
+  newRow.appendChild(description);
 
+  //create a second div row for the inputform
+  var secRow = document.createElement("div");
+  secRow.classList = "row center-align";
+  mainWindow.appendChild(secRow);
+
+  //create a form element
+  var inputForm = document.createElement("form");
+  secRow.appendChild(inputForm);
+
+  //create a text input field and add it to the form
+  var inputField = document.createElement("div");
+  inputField.classList = "input-field col s6 offset-s3";
+  inputForm.appendChild(inputField);
+  var textInput = document.createElement("input");
+  textInput.type = "text";
+  textInput.id = "recipeToSearch";
+  textInput.classList = "validate";
+  inputField.appendChild(textInput);
+
+//create a label for the text field and add it to the form
+  var inputLabel = document.createElement("label");
+  inputLabel.setAttribute("for", "recipeToSearch");
+  inputLabel.textContent = "Find this recipe";
+  inputField.appendChild(inputLabel);
+
+  //create a button and add it to the input form
+  var subBtn = document.createElement("button");
+  subBtn.classList = "btn waves-effect waves-light col s6 offset-s3";
+  subBtn.type = "submit";
+  subBtn.setAttribute("id", "recipeSearchButton");
+  subBtn.textContent = "Search";
+  inputForm.appendChild(subBtn);
+}
+
+recipeSearch();
+
+mainWindow.addEventListener("submit", function (event) {
+  event.preventDefault();
+  
+  console.log(document.getElementById("recipeToSearch").value);
+  getRecipes(document.getElementById("recipeToSearch").value);
+});
 //getRecipes()
 // calls spoonacular api for recipes based on key term search and returns object
+function getRecipes(searchTerm) {
 
+    fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${searchTerm}&number=10&offset=0`, {
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-key": "0f2b669cc5msh65b1d920849f4ebp157757jsnc5636ee97165",
+            "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+        }
+    })
+    .then(response => {
+        console.log(response.json());
+        //return response.json();
+        //displayRecipes(response.json());
+    })
+    .catch(err => {
+        console.error(err);
+    });
+
+}
 // searchByIngredient()
 // calls spoonacular api for recipes based on search by ingredients
 
 //displayRecipes()
 // should be called used getRecipes() and searchByIngredients() , generates cards based on query data and displays image of recipe plus number of used and missing ingredients, clicking on card calls displayRecipeDetails()
+
+
 
 //displayRecipeDetails()
 // generates more detailed description of recipe with image, ingredient lists, and instructions, button with option to open the recipe page in a new window. should also create description for the wine pairing feature with an input field for wine budget and buttons to get wine or skip
