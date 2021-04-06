@@ -46,8 +46,8 @@ var searchRecBtn = document.querySelector("#input-field");
 // recipeSearch()
 //initially low functionality that will be built out with options if time permits, generates description and input form for search term and button to submit
 function recipeSearch() {
-    //create a div row for the page description
-    mainWindow.innerHTML="";
+  //create a div row for the page description
+  mainWindow.innerHTML = "";
   var newRow = document.createElement("div");
   newRow.classList = "row center-align";
   mainWindow.appendChild(newRow);
@@ -76,7 +76,7 @@ function recipeSearch() {
   textInput.classList = "validate";
   inputField.appendChild(textInput);
 
-//create a label for the text field and add it to the form
+  //create a label for the text field and add it to the form
   var inputLabel = document.createElement("label");
   inputLabel.setAttribute("for", "recipeToSearch");
   inputLabel.textContent = "Find this recipe";
@@ -91,43 +91,145 @@ function recipeSearch() {
   inputForm.appendChild(subBtn);
 }
 
-recipeSearch();
+//recipeSearch();
 
 mainWindow.addEventListener("submit", function (event) {
   event.preventDefault();
-  
   console.log(document.getElementById("recipeToSearch").value);
   getRecipes(document.getElementById("recipeToSearch").value);
+});
+
+mainWindow.addEventListener("click", function (event) {
+  console.log(event.target.textContent);
+  if (event.target.textContent == "Search for meals") {
+    event.preventDefault();
+    recipeSearch();
+  } else if (event.target.textContent == "Search using Ingredients") {
+    event.preventDefault();
+    console.log("btntwo");
+    //thePantryPage();
+  }
 });
 //getRecipes()
 // calls spoonacular api for recipes based on key term search and returns object
 function getRecipes(searchTerm) {
+  fetch(
+    `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${searchTerm}&number=10&offset=0`,
+    {
+      method: "GET",
+      headers: {
+        "x-rapidapi-key": "0f2b669cc5msh65b1d920849f4ebp157757jsnc5636ee97165",
+        "x-rapidapi-host":
+          "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+      },
+    }
+  )
+    .then((response) => {
 
-    fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${searchTerm}&number=10&offset=0`, {
-        "method": "GET",
-        "headers": {
-            "x-rapidapi-key": "0f2b669cc5msh65b1d920849f4ebp157757jsnc5636ee97165",
-            "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
-        }
+      //console.log(response.json());
+      return response.json();
+      //displayRecipes(response.json());
+    }) .then((data) => {
+        displayRecipes(data, 0,  searchTerm);
     })
-    .then(response => {
-        console.log(response.json());
-        //return response.json();
-        //displayRecipes(response.json());
-    })
-    .catch(err => {
-        console.error(err);
+    .catch((err) => {
+      console.error(err);
     });
-
 }
-// searchByIngredient()
 // calls spoonacular api for recipes based on search by ingredients
-
-//displayRecipes()
+function searchByIngredient(ingredientArray) {
+  var ingredientString = "";
+  for (let i = 0; i < ingredientArray.length; i++) {
+    ingredientString += ingredientArray[i];
+    if (i != ingredientArray.length - 1) {
+      ingredientString += "%2C";
+    }
+  }
+  console.log(ingredientString);
+  // fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${ingredientString}&number=10&ranking=1&ignorePantry=true`, {
+  //     "method": "GET",
+  //     "headers": {
+  //         "x-rapidapi-key": "0f2b669cc5msh65b1d920849f4ebp157757jsnc5636ee97165",
+  //         "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+  //     }
+  // })
+  // .then(response => {
+  //     console.log(response.json());
+  //     displayRecipes(response.json());
+  // })
+  // .catch(err => {
+  //     console.error(err);
+  // });
+}
+//searchByIngredient(["dogs","cats","lions","tigers","bears"]);
+//
 // should be called used getRecipes() and searchByIngredients() , generates cards based on query data and displays image of recipe plus number of used and missing ingredients, clicking on card calls displayRecipeDetails()
+function displayRecipes(dataObject, startIndex, searchTerm) {
+mainWindow.innerHTML = "";
 
+var newRow = document.createElement("div");
+newRow.classList = "row center-align";
+mainWindow.appendChild(newRow);
+var description = document.createElement("h5");
+description.textContent =
+  `Here are the first five recipes for ${searchTerm}:`;
+description.classList = "col s8 offset-s2";
+newRow.appendChild(description);
 
+//create a new row to place all of our cards on
+var secRow = document.createElement("div");
+secRow.classList = "row center-align";
+mainWindow.appendChild(secRow);
 
+console.log(dataObject);
+for(let i = startIndex; i < 5; i++) {
+    var colDiv = document.createElement("div");
+    colDiv.classList= "col s6 m4 l2";
+    secRow.appendChild(colDiv);
+    var cardDiv = document.createElement("div");
+    cardDiv.classList = "card";
+    colDiv.appendChild(cardDiv);
+    var imgDiv = document.createElement("div");
+    imgDiv.classList = "card-image";
+    cardDiv.appendChild(imgDiv);
+    var image = document.createElement("img");
+    image.src = `https://spoonacular.com/recipeImages/${dataObject.results[i].id}-480x360.jpg`;
+    imgDiv.appendChild(image);
+    var cardTitle = document.createElement("h4");
+    cardTitle.classList = "card-title";
+    //cardTitle.style = "font-size:20px";
+    cardTitle.textContent= `${dataObject.results[i].title}`;
+    cardDiv.appendChild(cardTitle);
+    var contentDiv = document.createElement("div");
+    contentDiv.classList = "card-content";
+    cardDiv.appendChild(contentDiv);
+    var servings = document.createElement("p");
+    servings.textContent = `Servings: ${dataObject.results[i].servings}`;
+    contentDiv.appendChild(servings);
+    var minReady = document.createElement("p");
+    minReady.textContent = `Ready in : ${dataObject.results[i].readyInMinutes} Minutes`;
+    contentDiv.appendChild(minReady);
+    var addBtn = document.createElement("a");
+    addBtn.classList = "btn-floating halfway-fab waves-effect waves-light green";
+    addBtn.innerHTML = `<i class="material-icons">eat</i>`;
+    addBtn.id = dataObject.results[i].id;
+    imgDiv.appendChild(addBtn);
+}
+
+//need to create a way to show the next five recipes on screen when they click this button
+var moreRecipes = document.createElement("div");
+moreRecipes.classList = "row";
+mainWindow.appendChild(moreRecipes);
+var nextSet = document.createElement("button");
+nextSet.classList = "btn waves-effect waves-light col s6 offset-s3";
+nextSet.type = "submit";
+nextSet.setAttribute("id", "get-more-recipes");
+nextSet.textContent = "More Recipes";
+nextSet.dataset.recipe= searchTerm;
+moreRecipes.appendChild(nextSet);
+}
+//getRecipes("Lasagna");
+//displayRecipes();
 //displayRecipeDetails()
 // generates more detailed description of recipe with image, ingredient lists, and instructions, button with option to open the recipe page in a new window. should also create description for the wine pairing feature with an input field for wine budget and buttons to get wine or skip
 
