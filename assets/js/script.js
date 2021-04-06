@@ -161,7 +161,7 @@ function searchByIngredient(ingredientArray) {
   //     console.error(err);
   // });
 }
-searchByIngredient(["dogs","cats","lions","tigers","bears"]);
+//searchByIngredient(["dogs","cats","lions","tigers","bears"]);
 //
 // should be called used getRecipes() and searchByIngredients() , generates cards based on query data and displays image of recipe plus number of used and missing ingredients, clicking on card calls displayRecipeDetails()
 function displayRecipes(dataObject, startIndex, searchTerm) {
@@ -228,7 +228,7 @@ nextSet.textContent = "More Recipes";
 nextSet.dataset.recipe= searchTerm;
 moreRecipes.appendChild(nextSet);
 }
-getRecipes("Lasagna");
+//getRecipes("Lasagna");
 //displayRecipes();
 //displayRecipeDetails()
 // generates more detailed description of recipe with image, ingredient lists, and instructions, button with option to open the recipe page in a new window. should also create description for the wine pairing feature with an input field for wine budget and buttons to get wine or skip
