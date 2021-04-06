@@ -1,6 +1,9 @@
-var mainWindow = document.querySelector("#main-window");
+var mainWindow = document.querySelector("#landing-page");
 var searchByRecipes = document.querySelector("#recipeToSearch");
 var searchRecBtn = document.querySelector("#input-field");
+var recipSchBtn = document.querySelector("#recipe-search-btn")
+var ingredSchBtn = document.querySelector("#ingredient-search-btn")
+var ingredientSearch = document.querySelector("#ingredient-search")
 
 //HTML / CSS
 //Utilize Materialize CSS framework for page design and layout
@@ -34,14 +37,77 @@ var searchRecBtn = document.querySelector("#input-field");
 // displayRecipeOptions()
 // generate div content for page with description of choices between searching for a recipe by name or searching by ingredients you have in your pantry. creates two buttons that lead to the next set of functions
 
+ingredSchBtn.addEventListener("click", function(event) {
+  event.preventDefault();
+  mainWindow.classList.add("hide")
+  ingredientSearch.classList.remove("hide")
+})
 // thePantryPage()
 // generates a description of the pantry page and how it functions, includes input form for ingredients, calls savePantry on submission and Update Pantry to populate items
 
-// savePantry()
+function savePantry() {
+  localStorage.setItem("pantry", pantry)
+}
 // allows the user to add food items to their pantry list and save them to local storage
 
 // updatePantry()  and removeItem()??
 //updates/generates the list of user pantry items on screen, also used to remove items from the list
+var pantryFormEl = document.querySelector('#ingredients-add');
+var pantryListEl = document.querySelector('#ingredients-list');
+var ingredientBtnEl = document.querySelector('#add-ingredient-btn');
+var pantry = [];
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   var elems = document.querySelectorAll('.chips');
+//   var instances = M.Chips.init(elems, data);
+// });
+
+// function to handle form submission
+ingredientBtnEl.addEventListener('click', function(event){
+
+  event.preventDefault();
+
+  var ingredient = pantryFormEl.value;
+  console.log(pantryFormEl.value);
+
+  if (!ingredient) {
+    console.log('No shopping item filled out in form!');
+    return;
+  }
+
+  var listItemEl = document.createElement("li");
+  listItemEl.textContent = ingredient;
+
+  // var deleteBtnEl = document.createElement("button");
+
+  // deleteBtnEl.textContent = "x";
+
+  // deleteBtnEl.addEventListener("click", function(event){
+  //   event.preventDefault();
+  //   pantryListEl.removeChild(listItemEl);
+  //   pantry.splice(pantry.indexOf[listItemEl])
+  //   console.log(pantry)
+  // })
+
+  // listItemEl.appendChild(deleteBtnEl);
+
+  pantryListEl.appendChild(listItemEl);
+
+  pantry.push(ingredient);
+
+pantryFormEl.value = ('');
+
+console.log(pantry)
+
+savePantry();
+
+})
+
+
+
+// Create a submit event listener on the form element
+// handleFormSubmit(event));
+
 
 // recipeSearch()
 //initially low functionality that will be built out with options if time permits, generates description and input form for search term and button to submit
