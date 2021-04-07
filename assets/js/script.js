@@ -126,6 +126,29 @@ console.log(pantry)
 //   // localStorage.setItem("pantry", pantry)
 //   // console.log(pantry)
 // })
+mainWindow.addEventListener('click', function(event){
+    console.log(event.target);
+if(event.target == document.getElementById("get-more-recipes")) {
+    console.log(document.getElementById("get-more-recipes"));
+    generateCards(mainWindow.childNodes[1], currentRecipeIndex, JSON.parse(localStorage.getItem("bulkRecipes")));
+}
+if(event.target == document.getElementById("eat-me-button")) {
+    console.log(event.target.dataset.recipeID);
+    getSpecificRecipe(event.target.dataset.recipeID);
+}
+if(event.target == document.getElementById("wine-button")) {
+    console.log("clicked it");
+    displayWines(mainWindow.childNodes[2], JSON.parse(localStorage.getItem("chosenRecipe")));
+}
+if(event.target == document.getElementById("netflix-button")) {
+    console.log("lets netflix");
+}
+})
+
+pantrySaveEl.addEventListener('click', function(event){
+  savePantry();
+  console.log(pantry)
+})
 
 // Create a submit event listener on the form element
 // handleFormSubmit(event));
@@ -217,7 +240,7 @@ function getRecipes(searchTerm) {
       return response.json();
       //displayRecipes(response.json());
     }) .then((data) => {
-        localStorage.setItem("theRecipe", JSON.stringify(data));
+        localStorage.setItem("bulkRecipes", JSON.stringify(data));
         displayRecipes(data, 0,  searchTerm);
     })
     .catch((err) => {
@@ -242,12 +265,36 @@ function searchByIngredient(ingredientArray) {
       }
   })
   .then(response => {
-      console.log(response.json());
-      displayRecipes(response.json());
+      return response.json();
+  })
+  .then((data) => {
+    localStorage.setItem("bulkRecipes", JSON.stringify(data));
+      displayRecipes(data, 0, ingredientString);
   })
   .catch(err => {
       console.error(err);
   });
+}
+
+function getSpecificRecipe(recipeID) {
+    fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeID}/information`, {
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-key": "0f2b669cc5msh65b1d920849f4ebp157757jsnc5636ee97165",
+            "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+        }
+    })
+    .then(response => {
+        return response.json();
+    })
+    .then(data => {
+        localStorage.setItem("chosenRecipe", JSON.stringify(data));
+        displayRecipeDetails(data);
+    })
+    .catch(err => {
+        console.error(err);
+    });
+
 }
 //searchByIngredient(["dogs","cats","lions","tigers","bears"-]);
 //
@@ -317,10 +364,12 @@ for(let i = startHere; i < (startHere+5); i++) {
     var minReady = document.createElement("p");
     minReady.textContent = `Ready in : ${dataObject.results[i].readyInMinutes} Minutes`;
     contentDiv.appendChild(minReady);
-    var addBtn = document.createElement("a");
+
+    var addBtn = document.createElement("button");
     addBtn.classList = "btn-floating halfway-fab waves-effect waves-light green";
-    addBtn.innerHTML = `<i class="material-icons">eat</i>`;
-    addBtn.id = dataObject.results[i].id;
+    addBtn.dataset.recipeID = dataObject.results[i].id;
+    addBtn.id = "eat-me-button";
+    addBtn.innerHTML = `eat`;
     imgDiv.appendChild(addBtn);   
 }
 currentRecipeIndex+=5;
@@ -331,9 +380,124 @@ currentRecipeIndex+=5;
 //displayRecipeDetails()
 // generates more detailed description of recipe with image, ingredient lists, and instructions, button with option to open the recipe page in a new window. should also create description for the wine pairing feature with an input field for wine budget and buttons to get wine or skip
 
-//getWines()
-//creates apiurl from user input, validates and saves returned object, calls display wine function
+function displayRecipeDetails(dataObject) {
+    console.log(dataObject);
+    mainWindow.innerHTML = "";
 
+    //create a new row to house the recipe name
+    var newRow = document.createElement("div");
+    newRow.classList = "row center-align";
+    mainWindow.appendChild(newRow);
+    var description = document.createElement("h4");
+    description.textContent =
+      `${dataObject.title}`;
+    description.classList = "col s8 offset-s2";
+    newRow.appendChild(description);
+
+    //create a new row to house the recipe image and, cuisine type, diets
+    var secRow = document.createElement("div");
+    secRow.classList = "row center-align";
+    mainWindow.appendChild(secRow);
+
+    // add the recipe image
+    var imageCol = document.createElement("img");
+    imageCol.classList = "col s6";
+    imageCol.src = dataObject.image;
+    secRow.appendChild(imageCol);
+
+    // add a column and add a bunch of details details
+    var descCol = document.createElement("div");
+    descCol.classList = "col s6";
+    secRow.appendChild(descCol);
+
+    var vegan = document.createElement("p");
+    if(dataObject.vegan) {
+        vegan.textContent = "This dish IS Vegan";
+    }else {
+        vegan.textContent = "This dish is NOT Vegan";
+    }
+    descCol.appendChild(vegan);
+
+    var vegetarian = document.createElement("p");
+    if(dataObject.vegetarian) {
+        vegetarian.textContent = "This dish IS Vegetarian";
+    }else {
+        vegetarian.textContent = "This dish is NOT Vegetarian";
+    }
+    descCol.appendChild(vegetarian);
+
+    var glutenFree = document.createElement("p");
+    if(dataObject.glutenFree) {
+        glutenFree.textContent = "This dish IS Gluten Free";
+    }else {
+        glutenFree.textContent = "This dish is NOT Gluten Free";
+    }
+    descCol.appendChild(glutenFree);
+
+    var dairyFree = document.createElement("p");
+    if(dataObject.dairyFree) {
+        dairyFree.textContent = "This dish IS Dairy Free";
+    } else {
+        dairyFree.textContent = "This dish is NOT Dairy Free";
+    }
+    descCol.appendChild(dairyFree);
+
+    var fullRecipes = document.createElement("p");
+    fullRecipes.innerHTML = `Full Recipe can be found at: <a href=${dataObject.sourceUrl} target="_blank">${dataObject.sourceName}</a>`;
+    descCol.appendChild(fullRecipes);
+    var thirdRow = document.createElement("div");
+    thirdRow.classList = "row center-align";
+    mainWindow.appendChild(thirdRow);
+
+    var summary = document.createElement("p");
+    summary.classList = "col s12";
+    summary.innerHTML = `${dataObject.summary}`;
+    thirdRow.appendChild(summary);
+
+    //create a fourth row for our wine pairing and to move on to netflix section
+    var fourthRow = document.createElement("div");
+    fourthRow.classList = "row center-align";
+    mainWindow.appendChild(fourthRow);
+
+    //create a button to show wine pairing information
+    var wineBtn = document.createElement("button");
+    wineBtn.classList = "waves-effect waves-light btn col s5";
+    wineBtn.id = "wine-button";
+    wineBtn.textContent="Wine Pairings";
+    fourthRow.appendChild(wineBtn);
+
+    var netflixBtn = document.createElement("button");
+    netflixBtn.classList = "waves-effect waves-light btn col s5 offset-s2";
+    netflixBtn.id = "netflix-button";
+    netflixBtn.textContent = "Find a Movie";
+    fourthRow.appendChild(netflixBtn);
+}
+//displayRecipeDetails(JSON.parse(localStorage.getItem("chosenRecipe")));
+
+
+function displayWines(parentEl, dataObject) {
+parentEl.innerHTML = "";
+var wineHeader = document.createElement("h5");
+wineHeader.textContent= "Suggest Wine Pairings";
+parentEl.appendChild(wineHeader);
+
+if(dataObject.winePairing.pairedWines){
+var ulEl = document.createElement("ul");
+parentEl.appendChild(ulEl);
+for(let i = 0; i <dataObject.winePairing.pairedWines.length; i++) {
+    var listItemEl = document.createElement("li");
+    listItemEl.textContent = dataObject.winePairing.pairedWines[i].charAt(0).toUpperCase() +dataObject.winePairing.pairedWines[i].slice(1) ;
+    ulEl.appendChild(listItemEl);
+}
+var description = document.createElement("p");
+description.textContent = dataObject.winePairing.pairingText;
+parentEl.appendChild(description);
+} else {
+    var description = document.createElement("p");
+    description.textContent = "We're terribly sorry, we don't have any saved wine pairings for this recipe.";
+    parentEl.appendChild(description);
+}
+}
 //displayWines()
 // generates a list of possible wine pairings from wineobject with description of pairing choices. generates card(s) with product matches that contain an image, wine rating, and wine price. clicking on card creates modal with description of wine and button to select it
 
