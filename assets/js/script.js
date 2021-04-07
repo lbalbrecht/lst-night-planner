@@ -1,4 +1,8 @@
-var mainWindow = document.querySelector("#landing-page");
+var homeBtnEl = document.querySelector("#home-btn");
+var dinnerBtnEl = document.querySelector("#dinner-btn");
+var wineBtnEl = document.querySelector("#wine-btn")
+var movieBtnEl = document.querySelector("#movie-btn")
+var mainWindow = document.querySelector("#main-window");
 var searchByRecipes = document.querySelector("#recipeToSearch");
 var searchRecBtn = document.querySelector("#input-field");
 var recipSchBtn = document.querySelector("#recipe-search-btn")
@@ -36,11 +40,13 @@ var ingredientSearch = document.querySelector("#ingredient-search")
 
 // displayRecipeOptions()
 // generate div content for page with description of choices between searching for a recipe by name or searching by ingredients you have in your pantry. creates two buttons that lead to the next set of functions
-
-ingredSchBtn.addEventListener("click", function(event) {
-  event.preventDefault();
+function ingredientSearch() {
   mainWindow.classList.add("hide")
   ingredientSearch.classList.remove("hide")
+}
+ingredSchBtn.addEventListener("click", function(event) {
+  event.preventDefault();
+  ingredientSearch();
 })
 // thePantryPage()
 // generates a description of the pantry page and how it functions, includes input form for ingredients, calls savePantry on submission and Update Pantry to populate items
@@ -57,11 +63,6 @@ var pantryListEl = document.querySelector('#ingredients-list');
 var ingredientBtnEl = document.querySelector('#add-ingredient-btn');
 var pantry = [];
 
-// document.addEventListener('DOMContentLoaded', function() {
-//   var elems = document.querySelectorAll('.chips');
-//   var instances = M.Chips.init(elems, data);
-// });
-
 // function to handle form submission
 ingredientBtnEl.addEventListener('click', function(event){
 
@@ -71,7 +72,7 @@ ingredientBtnEl.addEventListener('click', function(event){
   console.log(pantryFormEl.value);
 
   if (!ingredient) {
-    console.log('No shopping item filled out in form!');
+    console.log('No ingredients filled out in form!');
     return;
   }
 
@@ -157,24 +158,16 @@ function recipeSearch() {
   inputForm.appendChild(subBtn);
 }
 
-//recipeSearch();
+recipSchBtn.addEventListener("click", function(event){
+  event.preventDefault();
+  recipeSearch();
+})
+
 
 mainWindow.addEventListener("submit", function (event) {
   event.preventDefault();
   console.log(document.getElementById("recipeToSearch").value);
   getRecipes(document.getElementById("recipeToSearch").value);
-});
-
-mainWindow.addEventListener("click", function (event) {
-  console.log(event.target.textContent);
-  if (event.target.textContent == "Search for meals") {
-    event.preventDefault();
-    recipeSearch();
-  } else if (event.target.textContent == "Search using Ingredients") {
-    event.preventDefault();
-    console.log("btntwo");
-    //thePantryPage();
-  }
 });
 //getRecipes()
 // calls spoonacular api for recipes based on key term search and returns object
@@ -316,3 +309,4 @@ moreRecipes.appendChild(nextSet);
 
 //summarizeEvening()
 // the final page generates a summary of the dinner, wine, and netflix selections that the user has made so far. clicking on a section provides an overview/summary of the specific option the user selected. button at bottom of the screen returns user to homepage to start over.
+
