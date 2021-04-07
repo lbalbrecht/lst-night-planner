@@ -40,13 +40,11 @@ var ingredientSearch = document.querySelector("#ingredient-search")
 
 // displayRecipeOptions()
 // generate div content for page with description of choices between searching for a recipe by name or searching by ingredients you have in your pantry. creates two buttons that lead to the next set of functions
-function ingredientSearch() {
-  mainWindow.classList.add("hide")
-  ingredientSearch.classList.remove("hide")
-}
+
 ingredSchBtn.addEventListener("click", function(event) {
   event.preventDefault();
-  ingredientSearch();
+  mainWindow.classList.add("hide")
+  ingredientSearch.classList.remove("hide")
 })
 // thePantryPage()
 // generates a description of the pantry page and how it functions, includes input form for ingredients, calls savePantry on submission and Update Pantry to populate items
@@ -61,50 +59,54 @@ function savePantry() {
 var pantryFormEl = document.querySelector('#ingredients-add');
 var pantryListEl = document.querySelector('#ingredients-list');
 var ingredientBtnEl = document.querySelector('#add-ingredient-btn');
+var pantrySaveEl = document.querySelector("#save-pantry-btn")
 var pantry = [];
 
 // function to handle form submission
 ingredientBtnEl.addEventListener('click', function(event){
-
+  
   event.preventDefault();
-
+  
   var ingredient = pantryFormEl.value;
   console.log(pantryFormEl.value);
-
+  
   if (!ingredient) {
     console.log('No ingredients filled out in form!');
     return;
   }
-
+  
   var listItemEl = document.createElement("li");
   listItemEl.textContent = ingredient;
 
-  // var deleteBtnEl = document.createElement("button");
+  var deleteBtnEl = document.createElement("button");
+  deleteBtnEl.textContent = "x";
 
-  // deleteBtnEl.textContent = "x";
-
-  // deleteBtnEl.addEventListener("click", function(event){
-  //   event.preventDefault();
-  //   pantryListEl.removeChild(listItemEl);
-  //   pantry.splice(pantry.indexOf[listItemEl])
-  //   console.log(pantry)
-  // })
-
-  // listItemEl.appendChild(deleteBtnEl);
-
+  deleteBtnEl.addEventListener("click", function(event){
+    event.preventDefault();
+    pantryListEl.removeChild(listItemEl);
+    pantry.splice(pantry.indexOf(event.target))
+    console.log(pantry)
+  })
+  
+  listItemEl.appendChild(deleteBtnEl);
+  
   pantryListEl.appendChild(listItemEl);
-
+  
   pantry.push(ingredient);
+
 
 pantryFormEl.value = ('');
 
 console.log(pantry)
 
-savePantry();
-
 })
 
 
+
+pantrySaveEl.addEventListener('click', function(event){
+  savePantry();
+  console.log(pantry)
+})
 
 // Create a submit event listener on the form element
 // handleFormSubmit(event));
@@ -213,20 +215,20 @@ function searchByIngredient(ingredientArray) {
     }
   }
   console.log(ingredientString);
-  // fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${ingredientString}&number=10&ranking=1&ignorePantry=true`, {
-  //     "method": "GET",
-  //     "headers": {
-  //         "x-rapidapi-key": "0f2b669cc5msh65b1d920849f4ebp157757jsnc5636ee97165",
-  //         "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
-  //     }
-  // })
-  // .then(response => {
-  //     console.log(response.json());
-  //     displayRecipes(response.json());
-  // })
-  // .catch(err => {
-  //     console.error(err);
-  // });
+  fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${ingredientString}&number=10&ranking=1&ignorePantry=true`, {
+      "method": "GET",
+      "headers": {
+          "x-rapidapi-key": "0f2b669cc5msh65b1d920849f4ebp157757jsnc5636ee97165",
+          "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+      }
+  })
+  .then(response => {
+      console.log(response.json());
+      displayRecipes(response.json());
+  })
+  .catch(err => {
+      console.error(err);
+  });
 }
 //searchByIngredient(["dogs","cats","lions","tigers","bears"-]);
 //
