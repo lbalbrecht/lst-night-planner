@@ -4,6 +4,7 @@ var searchRecBtn = document.querySelector("#input-field");
 var recipSchBtn = document.querySelector("#recipe-search-btn")
 var ingredSchBtn = document.querySelector("#ingredient-search-btn")
 var ingredientSearch = document.querySelector("#ingredient-search")
+var currentRecipeIndex = 0;
 
 //HTML / CSS
 //Utilize Materialize CSS framework for page design and layout
@@ -181,6 +182,9 @@ mainWindow.addEventListener("click", function (event) {
     event.preventDefault();
     console.log("btntwo");
     //thePantryPage();
+  } else if(event.target.textContent == "More Recipes") {
+      event.preventDefault();
+      generateCards(mainWindow.childNodes[1], currentRecipeIndex, JSON.parse(localStorage.getItem("theRecipe")));
   }
 });
 //getRecipes()
@@ -256,10 +260,30 @@ secRow.classList = "row center-align";
 mainWindow.appendChild(secRow);
 
 console.log(dataObject);
-for(let i = startIndex; i < 5; i++) {
+
+generateCards(secRow, startIndex, dataObject);
+//need to create a way to show the next five recipes on screen when they click this button
+var moreRecipes = document.createElement("div");
+moreRecipes.classList = "row";
+mainWindow.appendChild(moreRecipes);
+var nextSet = document.createElement("button");
+nextSet.classList = "btn waves-effect waves-light col s6 offset-s3";
+nextSet.type = "submit";
+nextSet.setAttribute("id", "get-more-recipes");
+nextSet.textContent = "More Recipes";
+nextSet.dataset.recipe= searchTerm;
+moreRecipes.appendChild(nextSet);
+}
+
+//moved this for loop outside of the displayRecipes functions and made its own function in order to be able to call to generate more recipe cards
+function generateCards(theParent, startHere, dataObject) {
+    if(startHere <= 15) {
+    theParent.innerHTML = "";
+for(let i = startHere; i < (startHere+5); i++) {
+    //debugger;
     var colDiv = document.createElement("div");
     colDiv.classList= "col s6 m4 l2";
-    secRow.appendChild(colDiv);
+    theParent.appendChild(colDiv);
     var cardDiv = document.createElement("div");
     cardDiv.classList = "card";
     colDiv.appendChild(cardDiv);
@@ -287,21 +311,11 @@ for(let i = startIndex; i < 5; i++) {
     addBtn.classList = "btn-floating halfway-fab waves-effect waves-light green";
     addBtn.innerHTML = `<i class="material-icons">eat</i>`;
     addBtn.id = dataObject.results[i].id;
-    imgDiv.appendChild(addBtn);
+    imgDiv.appendChild(addBtn);   
 }
+currentRecipeIndex+=5;
+}}
 
-//need to create a way to show the next five recipes on screen when they click this button
-var moreRecipes = document.createElement("div");
-moreRecipes.classList = "row";
-mainWindow.appendChild(moreRecipes);
-var nextSet = document.createElement("button");
-nextSet.classList = "btn waves-effect waves-light col s6 offset-s3";
-nextSet.type = "submit";
-nextSet.setAttribute("id", "get-more-recipes");
-nextSet.textContent = "More Recipes";
-nextSet.dataset.recipe= searchTerm;
-moreRecipes.appendChild(nextSet);
-}
 //getRecipes("Lasagna");
 //displayRecipes();
 //displayRecipeDetails()
