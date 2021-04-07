@@ -36,34 +36,49 @@ var currentRecipeIndex = 0;
 
 //summary page gives overview of the results that have been selected, can hover/click for more information about their selections
 
-//getStarted()
-// intitial function ran on page load, generates description of the web app and button that begins the series of forms for the user by calling displayRecipeOptions()
-
-// displayRecipeOptions()
-// generate div content for page with description of choices between searching for a recipe by name or searching by ingredients you have in your pantry. creates two buttons that lead to the next set of functions
-
 ingredSchBtn.addEventListener("click", function(event) {
   event.preventDefault();
   mainWindow.classList.add("hide")
   ingredientSearch.classList.remove("hide")
+  // displayPantry();
 })
-// thePantryPage()
-// generates a description of the pantry page and how it functions, includes input form for ingredients, calls savePantry on submission and Update Pantry to populate items
 
-function savePantry() {
-  localStorage.setItem("pantry", pantry)
-}
-// allows the user to add food items to their pantry list and save them to local storage
-
-// updatePantry()  and removeItem()??
-//updates/generates the list of user pantry items on screen, also used to remove items from the list
 var pantryFormEl = document.querySelector('#ingredients-add');
 var pantryListEl = document.querySelector('#ingredients-list');
 var ingredientBtnEl = document.querySelector('#add-ingredient-btn');
 var pantrySaveEl = document.querySelector("#save-pantry-btn")
 var pantry = [];
 
-// function to handle form submission
+
+// function displayPantry(){
+//   // debugger
+//   var pantryList = localStorage.getItem("pantry")
+//   var pantry = pantryList.split(',')
+//   console.log(pantryList)
+
+
+  
+//   for (i = 0; i < pantry.length - 1; i++) {
+//     var listItemEl = document.createElement("li");
+    
+//     listItemEl.textContent = pantry[i];
+    
+//     // var deleteBtnEl = document.createElement("button");
+//     // deleteBtnEl.textContent = "x";
+//     // deleteBtnEl.addEventListener("click", function(event){
+//     //   event.preventDefault();
+//     //   pantryListEl.removeChild(listItemEl);
+//     //   pantry.splice(pantry.indexOf(event.target))
+//     //   console.log(pantry)
+//     // })
+    
+//     // listItemEl.appendChild(deleteBtnEl);
+    
+//     pantryListEl.appendChild(listItemEl);
+    
+//   }
+// }
+
 ingredientBtnEl.addEventListener('click', function(event){
   
   event.preventDefault();
@@ -80,14 +95,14 @@ ingredientBtnEl.addEventListener('click', function(event){
   listItemEl.textContent = ingredient;
 
   var deleteBtnEl = document.createElement("button");
-  deleteBtnEl.textContent = "x";
+deleteBtnEl.textContent = "x";
 
-  deleteBtnEl.addEventListener("click", function(event){
-    event.preventDefault();
-    pantryListEl.removeChild(listItemEl);
-    pantry.splice(pantry.indexOf(event.target))
-    console.log(pantry)
-  })
+deleteBtnEl.addEventListener("click", function(event){
+  event.preventDefault();
+  pantryListEl.removeChild(listItemEl);
+  pantry.splice(pantry.indexOf(event.target))
+  console.log(pantry)
+})
   
   listItemEl.appendChild(deleteBtnEl);
   
@@ -102,6 +117,15 @@ console.log(pantry)
 
 })
 
+// pantrySaveEl.addEventListener('click', function(event){
+//   // event.preventDefault();
+//   var store = localStorage.getItem("pantry")
+//   var pantryArray = store.split(",")
+//   console.log(pantryArray)
+//   // pantry.push(store);
+//   // localStorage.setItem("pantry", pantry)
+//   // console.log(pantry)
+// })
 mainWindow.addEventListener('click', function(event){
     console.log(event.target);
 if(event.target == document.getElementById("get-more-recipes")) {
