@@ -1,3 +1,7 @@
+var homeBtnEl = document.querySelector("#home-btn");
+var dinnerBtnEl = document.querySelector("#dinner-btn");
+var wineBtnEl = document.querySelector("#wine-btn")
+var movieBtnEl = document.querySelector("#movie-btn")
 var mainWindow = document.querySelector("#main-window");
 var searchByRecipes = document.querySelector("#recipeToSearch");
 var searchRecBtn = document.querySelector("#input-field");
@@ -56,55 +60,54 @@ function savePantry() {
 var pantryFormEl = document.querySelector('#ingredients-add');
 var pantryListEl = document.querySelector('#ingredients-list');
 var ingredientBtnEl = document.querySelector('#add-ingredient-btn');
+var pantrySaveEl = document.querySelector("#save-pantry-btn")
 var pantry = [];
-
-// document.addEventListener('DOMContentLoaded', function() {
-//   var elems = document.querySelectorAll('.chips');
-//   var instances = M.Chips.init(elems, data);
-// });
 
 // function to handle form submission
 ingredientBtnEl.addEventListener('click', function(event){
-
+  
   event.preventDefault();
-
+  
   var ingredient = pantryFormEl.value;
   console.log(pantryFormEl.value);
-
+  
   if (!ingredient) {
-    console.log('No shopping item filled out in form!');
+    console.log('No ingredients filled out in form!');
     return;
   }
-
+  
   var listItemEl = document.createElement("li");
   listItemEl.textContent = ingredient;
 
-  // var deleteBtnEl = document.createElement("button");
+  var deleteBtnEl = document.createElement("button");
+  deleteBtnEl.textContent = "x";
 
-  // deleteBtnEl.textContent = "x";
-
-  // deleteBtnEl.addEventListener("click", function(event){
-  //   event.preventDefault();
-  //   pantryListEl.removeChild(listItemEl);
-  //   pantry.splice(pantry.indexOf[listItemEl])
-  //   console.log(pantry)
-  // })
-
-  // listItemEl.appendChild(deleteBtnEl);
-
+  deleteBtnEl.addEventListener("click", function(event){
+    event.preventDefault();
+    pantryListEl.removeChild(listItemEl);
+    pantry.splice(pantry.indexOf(event.target))
+    console.log(pantry)
+  })
+  
+  listItemEl.appendChild(deleteBtnEl);
+  
   pantryListEl.appendChild(listItemEl);
-
+  
   pantry.push(ingredient);
+
 
 pantryFormEl.value = ('');
 
 console.log(pantry)
 
-savePantry();
-
 })
 
 
+
+pantrySaveEl.addEventListener('click', function(event){
+  savePantry();
+  console.log(pantry)
+})
 
 // Create a submit event listener on the form element
 // handleFormSubmit(event));
@@ -158,7 +161,11 @@ function recipeSearch() {
   inputForm.appendChild(subBtn);
 }
 
-//recipeSearch();
+recipSchBtn.addEventListener("click", function(event){
+  event.preventDefault();
+  recipeSearch();
+})
+
 
 mainWindow.addEventListener("submit", function (event) {
   event.preventDefault();
@@ -171,21 +178,6 @@ if(document.getElementById("recipeSearchButton")) {
     getRecipes(document.getElementById("recipeToSearch").value);
 }
 
-});
-
-mainWindow.addEventListener("click", function (event) {
-  console.log(event.target.textContent);
-  if (event.target.textContent == "Search for meals") {
-    event.preventDefault();
-    recipeSearch();
-  } else if (event.target.textContent == "Search using Ingredients") {
-    event.preventDefault();
-    console.log("btntwo");
-    //thePantryPage();
-  } else if(event.target.textContent == "More Recipes") {
-      event.preventDefault();
-      generateCards(mainWindow.childNodes[1], currentRecipeIndex, JSON.parse(localStorage.getItem("theRecipe")));
-  }
 });
 //getRecipes()
 // calls spoonacular api for recipes based on key term search and returns object
@@ -224,20 +216,20 @@ function searchByIngredient(ingredientArray) {
     }
   }
   console.log(ingredientString);
-  // fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${ingredientString}&number=10&ranking=1&ignorePantry=true`, {
-  //     "method": "GET",
-  //     "headers": {
-  //         "x-rapidapi-key": "0f2b669cc5msh65b1d920849f4ebp157757jsnc5636ee97165",
-  //         "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
-  //     }
-  // })
-  // .then(response => {
-  //     console.log(response.json());
-  //     displayRecipes(response.json());
-  // })
-  // .catch(err => {
-  //     console.error(err);
-  // });
+  fetch(`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${ingredientString}&number=10&ranking=1&ignorePantry=true`, {
+      "method": "GET",
+      "headers": {
+          "x-rapidapi-key": "0f2b669cc5msh65b1d920849f4ebp157757jsnc5636ee97165",
+          "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
+      }
+  })
+  .then(response => {
+      console.log(response.json());
+      displayRecipes(response.json());
+  })
+  .catch(err => {
+      console.error(err);
+  });
 }
 //searchByIngredient(["dogs","cats","lions","tigers","bears"-]);
 //
@@ -338,3 +330,4 @@ currentRecipeIndex+=5;
 
 //summarizeEvening()
 // the final page generates a summary of the dinner, wine, and netflix selections that the user has made so far. clicking on a section provides an overview/summary of the specific option the user selected. button at bottom of the screen returns user to homepage to start over.
+
