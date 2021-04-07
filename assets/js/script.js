@@ -1,4 +1,4 @@
-var mainWindow = document.querySelector("#landing-page");
+var mainWindow = document.querySelector("#main-window");
 var searchByRecipes = document.querySelector("#recipeToSearch");
 var searchRecBtn = document.querySelector("#input-field");
 var recipSchBtn = document.querySelector("#recipe-search-btn")
@@ -161,8 +161,15 @@ function recipeSearch() {
 
 mainWindow.addEventListener("submit", function (event) {
   event.preventDefault();
-  console.log(document.getElementById("recipeToSearch").value);
-  getRecipes(document.getElementById("recipeToSearch").value);
+  if(document.getElementById("recipe-search-btn")) {
+  console.log(document.getElementById("recipe-search-btn").value);
+  getRecipes(document.getElementById("recipe-search-btn").value);
+}
+if(document.getElementById("recipeSearchButton")) {
+    console.log(document.getElementById("recipeToSearch").value);
+    getRecipes(document.getElementById("recipeToSearch").value);
+}
+
 });
 
 mainWindow.addEventListener("click", function (event) {
@@ -180,7 +187,7 @@ mainWindow.addEventListener("click", function (event) {
 // calls spoonacular api for recipes based on key term search and returns object
 function getRecipes(searchTerm) {
   fetch(
-    `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${searchTerm}&number=10&offset=0`,
+    `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${searchTerm}&number=20&offset=0`,
     {
       method: "GET",
       headers: {
@@ -196,6 +203,7 @@ function getRecipes(searchTerm) {
       return response.json();
       //displayRecipes(response.json());
     }) .then((data) => {
+        localStorage.setItem("theRecipe", JSON.stringify(data));
         displayRecipes(data, 0,  searchTerm);
     })
     .catch((err) => {
@@ -227,7 +235,7 @@ function searchByIngredient(ingredientArray) {
   //     console.error(err);
   // });
 }
-//searchByIngredient(["dogs","cats","lions","tigers","bears"]);
+//searchByIngredient(["dogs","cats","lions","tigers","bears"-]);
 //
 // should be called used getRecipes() and searchByIngredients() , generates cards based on query data and displays image of recipe plus number of used and missing ingredients, clicking on card calls displayRecipeDetails()
 function displayRecipes(dataObject, startIndex, searchTerm) {
