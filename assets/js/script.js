@@ -187,7 +187,7 @@ mainWindow.addEventListener("click", function (event) {
 // calls spoonacular api for recipes based on key term search and returns object
 function getRecipes(searchTerm) {
   fetch(
-    `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${searchTerm}&number=10&offset=0`,
+    `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${searchTerm}&number=20&offset=0`,
     {
       method: "GET",
       headers: {
@@ -203,6 +203,7 @@ function getRecipes(searchTerm) {
       return response.json();
       //displayRecipes(response.json());
     }) .then((data) => {
+        localStorage.setItem("theRecipe", JSON.stringify(data));
         displayRecipes(data, 0,  searchTerm);
     })
     .catch((err) => {
