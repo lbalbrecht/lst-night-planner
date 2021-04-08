@@ -3,7 +3,7 @@ var mainwindow = document.getElementById("landing-page");  //chooses where to sh
 
 function generateNetflixform() {  //creates the initial landing page for the netflix module.  Generates a form for the user to narrow their criteria.
 var tempText = `
-There are a bunch of different ways we can help you find something to watch on Netflix! In the form below, enter all the criteria you want met and we'll do the rest; or you can leave it empty.
+There are a bunch of different ways we can help you find something to watch on Netflix! In the form below, enter all the criteria you want met and we'll do the rest; or you can leave it blank and we'll pick a few random titles for you if you leave everything blank.
 <form id="netflixForm">
     <p class="col s4">
         <input id="StartYear" type="number" value="1990" min="1960" max="2021" oninput="this.nextElementSibling.value = this.value">
@@ -35,6 +35,18 @@ There are a bunch of different ways we can help you find something to watch on N
           Series
         </label>
     </div>
+
+    <div class = "row">
+    <label>Genre</label>
+    <select multiple>
+       <option value = "" disabled selected>Select Fruit</option>
+       <option value = "1">Mango</option>
+       <option value = "2">Orange</option>
+       <option value = "3">Apple</option>
+    </select>              
+    </div>
+
+
     <div class="row">
         <p>
             <a class="waves-effect waves-light btn" onclick="getNetflixResults()">submit</a>
@@ -142,11 +154,10 @@ function generateNetflixShow(event, NetflixList, varStart) {  //this function ge
     for (var i=1; i<5; i++) {
       curI = varStart+i;
       if (curI < NetflixList.length) {
-        
         tempText += `
    <div class="card col netflix s3">
    <div class="card-image waves-effect waves-block waves-light">
-   <img class="activator" src="`+NetflixList[curI].image+`" onerror="this.style.display='none'">
+   <img class="activator" src="`+NetflixList[curI].image+`">
    </div>
    <div class="card-content">
      <span class="card-title activator grey-text text-darken-4"><i class="material-icons right">more_vert</i>`+NetflixList[curI].title+`</span>
@@ -164,7 +175,6 @@ function generateNetflixShow(event, NetflixList, varStart) {  //this function ge
     `
         }
     }
-
   var backI = curI-8;
   tempText += `</div><div class="align-bottom height:50px;"><p>`;
   if (backI >= -1) {  //checks to see if the back button should be created
