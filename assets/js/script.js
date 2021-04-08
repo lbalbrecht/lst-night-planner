@@ -454,11 +454,11 @@ function summarizeEvening() {
   var imageCol = document.createElement("img");
   imageCol.classList = "col s6";
   imageCol.src = yourMovie.image;
-  secRow.appendChild(imageCol);
+  thirdRow.appendChild(imageCol);
 
   var descCol = document.createElement("div");
   descCol.classList = "col s6";
-  secRow.appendChild(descCol);
+  thirdRow.appendChild(descCol);
 
   var movieName = document.createElement("h5");
     movieName.textContent = `${yourMovie.title} ${yourMovie.year}`;
@@ -469,7 +469,7 @@ function summarizeEvening() {
   descCol.appendChild(movieScore);
   
 }
-summarizeEvening();
+//summarizeEvening();
 
 
 recipSchBtn.addEventListener("click", function (event) {
