@@ -1,16 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
-    <title>Document</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="sk-netflix/netflix.css"/>
+    <title>Quarantine and Chill</title>
 </head>
+
 <body>
-    
+    <nav>
+        <div class="nav-wrapper">
+            <a class="brand-logo" id="home-btn">Plan Your Night In</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a id="dinner-btn">Dinner</a></li>
+                <li><a id="wine-btn">Wine</a></li>
+                <li><a href="#" onclick="generateNetflixform()">Movie</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row" id ="main-window">
+            <div class="col s12 m10 center-align" id="header">
+                <h5>Welcome to Quarantine and Chill!</5>
+                    <div class="card-panel" id="landing-page">
+                        <h6>Spending a night at home and not sure what to do? Let us help! Prepare for your night in by
+                            planning dinner and a movie. Use our recipe finder to choose the perfect meal paired with a
+                            bottle of wine that meets your budget. Worried about the food in your fridge going bad?
+                            Well, you can find a recipe based on specific ingredients! Once your fed, settle down for a
+                            Netflix special. Find a movie based on genre, actor, etc. etc.<br></h6>
+                        <h5>We'll start with dinner. Do you want to look for a meal or look for a recipe using specific
+                            ingredients?</h5>
+                        <div class="row">
+                            <form class="col s12">
+                                <div class="row">
+                                    <div class="input-field col s10 offset-s1">
+                                        <a href="index.html" class="btn waves-effect waves-light col" id="recipe-search-btn">
+                                            <h6>Search for meals</h6>
+                                        </a>
+                                        <a href="index.html" class="btn waves-effect waves-light col right-align" id="ingredient-search-btn">
+                                            <h6>Search using Ingredients</h6>
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="row hide" id="ingredient-search">
+            <div class="col s12 m10 center-align" id="header">
+                <h5>Add your ingredients</5>
+                    <div class="card-panel" id="ingredient-input">
+                        <h6>Enter the ingredients you already have at home in the field below. To enter multiple
+                            ingredients, separate each item with a space.<br>The "maximize" button will look for recipes
+                            with the highest number of ingredients you've included. The "minimize" button will look for
+                            recipes that require the fewest ingredients that aren't included.</h6>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input placeholder="Add ingredients" id="ingredients-add" name="ingredients-add" type="text" class="validate">
+                                <label for="ingredients-add"></label>
+                                <a class="btn waves-effect waves-light col" id="add-ingredient-btn">
+                                    <h6>Add ingredient</h6>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s10">
+                                <ul class="left-align" id="ingredients-list"></ul>
+                            </div>
+                            <!-- <div class="chips chips-initial">
+                                <i class="close material-icons">close</i>
+                            </div> -->
+                            <div class="col s2" id="buttons">
+                                <p>
+                                    <label>
+                                        <input type="checkbox" class="filled-in" checked="checked" id="maximize-btn" />
+                                        <span>Maximize</span>
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <input type="checkbox" class="filled-in" checked="checked" id="minimize-btn" />
+                                        <span>Minimize</span>
+                                    </label>
+                                </p>
+                            </div>
+                            <a class="btn waves-effect waves-light col" id="add-ingredient-btn">
+                                <h6>Search for a recipe</h6>
+                            </a>
+                            <a class="btn waves-effect waves-light col" id="save-pantry-btn">
+                                <h6>Save ingredients</h6>
+                            </a>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="./assets/js/script.js"></script>
+    <script src="sk-netflix/netflix.js"></script>
 </body>
+
 </html>
