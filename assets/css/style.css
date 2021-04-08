@@ -22,3 +22,16 @@
     height: 25px;
     max-height: 25px;
 }
+
+@media screen and (max-width: 850px) {
+    #recipe-search-btn {
+        float:none;
+    }
+    #ingredient-search-btn {
+        float:none;
+    }
+
+    /* #header h5 {
+
+    } */
+}
