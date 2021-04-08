@@ -5,9 +5,10 @@ var movieBtnEl = document.querySelector("#movie-btn");
 var mainWindow = document.querySelector("#main-window");
 var searchByRecipes = document.querySelector("#recipeToSearch");
 var searchRecBtn = document.querySelector("#input-field");
-var recipSchBtn = document.querySelector("#recipe-search-btn");
-var ingredSchBtn = document.querySelector("#ingredient-search-btn");
-var ingredientSearch = document.querySelector("#ingredient-search");
+var recipSchBtn = document.querySelector("#recipe-search-btn")
+var ingredSchBtn = document.querySelector("#ingredient-search-btn")
+var ingredientSearch = document.querySelector("#ingredient-search")
+var recipIngredSchBtn = document.querySelector("#recipe-ingredient-btn")
 var currentRecipeIndex = 0;
 
 var pantryFormEl = document.querySelector("#ingredients-add");
@@ -16,8 +17,63 @@ var ingredientBtnEl = document.querySelector("#add-ingredient-btn");
 var pantrySaveEl = document.querySelector("#save-pantry-btn");
 var pantry = [];
 
-// recipeSearch()
-//initially low functionality that will be built out with options if time permits, generates description and input form for search term and button to submit
+ingredientBtnEl.addEventListener('click', function(event){
+  
+  event.preventDefault();
+  
+  var ingredient = pantryFormEl.value;
+  console.log(pantryFormEl.value);
+  
+  if (!ingredient) {
+    console.log('No ingredients filled out in form!');
+    return;
+  }
+  
+  var listItemEl = document.createElement("li");
+  listItemEl.textContent = ingredient;
+
+  var deleteBtnEl = document.createElement("button");
+deleteBtnEl.textContent = "x";
+
+deleteBtnEl.addEventListener("click", function(event){
+  event.preventDefault();
+  pantryListEl.removeChild(listItemEl);
+  pantry.splice(pantry.indexOf(event.target))
+  console.log(pantry)
+})
+  
+  listItemEl.appendChild(deleteBtnEl);
+  
+  pantryListEl.appendChild(listItemEl);
+  
+  pantry.push(ingredient);
+
+
+pantryFormEl.value = ('');
+
+console.log(pantry)
+
+})
+
+mainWindow.addEventListener('click', function(event){
+    // console.log(event.target);
+if(event.target == document.getElementById("get-more-recipes")) {
+    console.log(document.getElementById("get-more-recipes"));
+    generateCards(mainWindow.childNodes[1], currentRecipeIndex, JSON.parse(localStorage.getItem("bulkRecipes")));
+}
+if(event.target == document.getElementById("eat-me-button")) {
+    console.log(event.target.dataset.recipeID);
+    getSpecificRecipe(event.target.dataset.recipeID);
+}
+if(event.target == document.getElementById("wine-button")) {
+    console.log("clicked it");
+    displayWines(mainWindow.childNodes[2], JSON.parse(localStorage.getItem("chosenRecipe")));
+}
+if(event.target == document.getElementById("netflix-button")) {
+    console.log("lets netflix");
+}
+})
+
 function recipeSearch() {
   //create a div row for the page description
   mainWindow.innerHTML = "";
@@ -64,7 +120,30 @@ function recipeSearch() {
   inputForm.appendChild(subBtn);
 }
 
-//getRecipes()
+recipSchBtn.addEventListener("click", function(event){
+  event.preventDefault();
+  recipeSearch();
+})
+
+recipIngredSchBtn.addEventListener('click', function(event){
+  event.preventDefault();
+  searchByIngredient();
+})
+
+
+mainWindow.addEventListener("submit", function (event) {
+  event.preventDefault();
+  if(document.getElementById("recipe-search-btn")) {
+  console.log(document.getElementById("recipe-search-btn").value);
+  getRecipes(document.getElementById("recipe-search-btn").value);
+}
+if(document.getElementById("recipeSearchButton")) {
+    console.log(document.getElementById("recipeToSearch").value);
+    getRecipes(document.getElementById("recipeToSearch").value);
+}
+
+});
+
 // calls spoonacular api for recipes based on key term search and returns object
 function getRecipes(searchTerm) {
   fetch(
@@ -116,11 +195,11 @@ function getSpecificRecipe(recipeID) {
     });
 }
 // calls spoonacular api for recipes based on search by ingredients
-function searchByIngredient(ingredientArray) {
+function searchByIngredient() {
   var ingredientString = "";
-  for (let i = 0; i < ingredientArray.length; i++) {
-    ingredientString += ingredientArray[i];
-    if (i != ingredientArray.length - 1) {
+  for (let i = 0; i < pantry.length; i++) {
+    ingredientString += pantry[i];
+    if (i != pantry.length - 1) {
       ingredientString += "%2C";
     }
   }
