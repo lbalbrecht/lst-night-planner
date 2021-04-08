@@ -145,10 +145,10 @@ if(event.target == document.getElementById("netflix-button")) {
 }
 })
 
-pantrySaveEl.addEventListener('click', function(event){
-  savePantry();
-  console.log(pantry)
-})
+// pantrySaveEl.addEventListener('click', function(event){
+//   savePantry();
+//   console.log(pantry)
+// })
 
 // Create a submit event listener on the form element
 // handleFormSubmit(event));
