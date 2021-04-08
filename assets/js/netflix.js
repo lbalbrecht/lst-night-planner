@@ -1,8 +1,12 @@
 var NetflixList;
-var mainwindow = document.getElementById("landing-page");  //chooses where to show where the results of the netflix section
+var mainwindow = document.getElementById("main-window");  //chooses where to show where the results of the netflix section
 
 function generateNetflixform() {  //creates the initial landing page for the netflix module.  Generates a form for the user to narrow their criteria.
 var tempText = `
+<div class="col s12 m10 center-align" id="header">
+<h5>Welcome to Quarantine and Chill!</5>
+    <div class="card-panel" id="landing-page">
+
 There are a bunch of different ways we can help you find something to watch on Netflix! In the form below, enter all the criteria you want met and we'll do the rest; or you can leave it empty.
 <form id="netflixForm">
     <p class="col s4">
@@ -42,6 +46,9 @@ There are a bunch of different ways we can help you find something to watch on N
     </div>
 </div>
 </form>
+</div>
+
+</div>
 </div>
 `
     mainwindow.innerHTML = tempText;  //populates the section with all the Netflix HTML code entered into tempText
