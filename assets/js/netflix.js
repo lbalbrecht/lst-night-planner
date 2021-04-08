@@ -1,10 +1,9 @@
 var NetflixList;
-var mainwindow = document.getElementById("landing-page")
+var mainwindow = document.getElementById("landing-page");  //chooses where to show where the results of the netflix section
 
-
-function generateNetflixform() {
+function generateNetflixform() {  //creates the initial landing page for the netflix module.  Generates a form for the user to narrow their criteria.
 var tempText = `
-There are a bunch of different ways we can help you find something to watch on Netflix! In the form below, enter all the criteria you want met and we'll do the rest; or you can leave it blank and we'll pick a few random titles for you if you leave everything blank.
+There are a bunch of different ways we can help you find something to watch on Netflix! In the form below, enter all the criteria you want met and we'll do the rest; or you can leave it empty.
 <form id="netflixForm">
     <p class="col s4">
         <input id="StartYear" type="number" value="1990" min="1960" max="2021" oninput="this.nextElementSibling.value = this.value">
@@ -36,16 +35,6 @@ There are a bunch of different ways we can help you find something to watch on N
           Series
         </label>
     </div>
-
-    <!-- <div class="input-field col s12">
-        <select>
-          <option value="" disabled selected>Choose your option</option>
-          <option value="1">Option 1</option>
-          <option value="2">Option 2</option>
-          <option value="3">Option 3</option>
-        </select>
-        <label>Genre</label>
-    </div> -->
     <div class="row">
         <p>
             <a class="waves-effect waves-light btn" onclick="getNetflixResults()">submit</a>
@@ -55,10 +44,10 @@ There are a bunch of different ways we can help you find something to watch on N
 </form>
 </div>
 `
-    mainwindow.innerHTML = tempText;
+    mainwindow.innerHTML = tempText;  //populates the section with all the Netflix HTML code entered into tempText
 }
 
-function getNetflixResults() {
+function getNetflixResults() {  //curates the search form results and makes them query friendly and checks for minor issues
 var DateAfter = document.querySelector('#StartYear').value;
 var DateBefore = document.querySelector('#EndYear').value;
 var Genre = "";
@@ -73,7 +62,7 @@ Keyword = Keyword + ` `+ ActorName;
 if (Keyword != " ")   {    Keyword = `&query=`+Keyword;} else { Keyword="";}
 if (MorS == false) {MorS = "&type=movie";} else MorS = "&type=series"
 
-
+//verify in console.log that the data is showing up accurately.
 console.log(`date start: `+DateAfter); 
 console.log(`date before: `+DateBefore); 
 console.log(`genre: `+Genre); 
@@ -85,7 +74,7 @@ console.log(`Keyword: `+Keyword);
 queryNetflix(DateBefore, DateAfter, Genre, IMDBscore, ActorName, MorS, Keyword);
 }
 
-function queryNetflix (DateBefore, DateAfter, Genre, IMDBscore, ActorName, MorS, Keyword) {
+function queryNetflix (DateBefore, DateAfter, Genre, IMDBscore, ActorName, MorS, Keyword) {  //query the Unogsng API with the set criteria.  If left blank, it will search for default results.
 
 // var defaultSearch = "https://unogsng.p.rapidapi.com/search?type=movie&start_year=1972&orderby=rating&audiosubtitle_andor=and&start_rating=5&limit=100&subtitle=english&countrylist=78%2C46&audio=english&country_andorunique=unique&offset=0&end_year=2019";
 
@@ -134,14 +123,14 @@ fetch (defaultSearch, {
 });
 }
 
-function changeMorS () {
+function changeMorS () {  //this function checks too see if the switch to toggle between movies/series is checked.
     var MorS = document.querySelector('#MorS'); 
 
     if (MorS.checked == true) {MorS.checked = false} else MorS.checked = true;
     console.log(MorS.checked);
 }
 
-function generateNetflixShow(event, NetflixList, varStart) {
+function generateNetflixShow(event, NetflixList, varStart) {  //this function generates cards to display the netflix results.  The NetflixList is an array with all the info.  varStart is the index starting point to display 4 results.
     if (event) {
         event.preventDefault();
     }
@@ -153,10 +142,11 @@ function generateNetflixShow(event, NetflixList, varStart) {
     for (var i=1; i<5; i++) {
       curI = varStart+i;
       if (curI < NetflixList.length) {
+        
         tempText += `
    <div class="card col netflix s3">
    <div class="card-image waves-effect waves-block waves-light">
-   <img class="activator" src="`+NetflixList[curI].image+`">
+   <img class="activator" src="`+NetflixList[curI].image+`" onerror="this.style.display='none'">
    </div>
    <div class="card-content">
      <span class="card-title activator grey-text text-darken-4"><i class="material-icons right">more_vert</i>`+NetflixList[curI].title+`</span>
@@ -174,32 +164,19 @@ function generateNetflixShow(event, NetflixList, varStart) {
     `
         }
     }
+
   var backI = curI-8;
   tempText += `</div><div class="align-bottom height:50px;"><p>`;
-  if (backI >= -1) {
+  if (backI >= -1) {  //checks to see if the back button should be created
     tempText += `[ <a href="" onclick="generateNetflixShow(event,NetflixList,`+backI+`)">back</a> ]`;
   }
-  if (curI+1 < NetflixList.length) {
+  if (curI+1 < NetflixList.length) {  //checks to see if there are more results needed to be shown
     tempText += `[ <a href="" onclick="generateNetflixShow(event,NetflixList,`+curI+`)">forward</a> ]`;
   }
   tempText += `</div>`;
   mainwindow.innerHTML = tempText;
 }
 
-// function displayNetflixResults(NetflixList, varStart) {
-
-//     for(var i = 0; i < 5; i++) {
-//        $(`#card`+i+`-title`).text(NetflixList[i].title); //card1-title
-//        $(`#card`+i+`-Dtitle`).text(NetflixList[i].title); //card1-title
-//        $(`#card`+i+`-image`).attr("src", NetflixList[i].image); //card1-image
-//        $(`#card`+i+`-year`).text(NetflixList[i].year); //card0-year
-//        $(`#card`+i+`-syn`).text(NetflixList[i].syn); //card0-syn
-//        $(`#card`+i+`-IMDB`).text(NetflixList[i].IMDB); //card0-IMDB
-//        $(`#card`+i+`-runtime`).text(NetflixList[i].runtime); //card0-runtime
-//        $(`#card`+i+`-runtime`).attr("onclick", `saveNetflix(`+NetflixList[i].nfid+`)`); //card0-runtime
-//     }
-// }
-
-function saveNetflix(nfid) {
+function saveNetflix(nfid) {  // once the user clicks the SAVE button, determines what happens to the Netflix ID chosen.
     console.log(nfid+` was chosen`)
 }
