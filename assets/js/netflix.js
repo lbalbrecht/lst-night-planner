@@ -157,7 +157,7 @@ function generateNetflixShow(event, NetflixList, varStart) {  //this function ge
         tempText += `
    <div class="card col netflix s3">
    <div class="card-image waves-effect waves-block waves-light">
-   <img class="activator" src="`+NetflixList[curI].image+`">
+   <img class="activator" src="`+NetflixList[curI].image+`" onerror="this.style.display='none'">
    </div>
    <div class="card-content">
      <span class="card-title activator grey-text text-darken-4"><i class="material-icons right">more_vert</i>`+NetflixList[curI].title+`</span>
