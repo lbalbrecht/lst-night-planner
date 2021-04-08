@@ -60,6 +60,9 @@ mainWindow.addEventListener('click', function(event){
 if(event.target == document.getElementById("get-more-recipes")) {
     console.log(document.getElementById("get-more-recipes"));
     generateCards(mainWindow.childNodes[1], currentRecipeIndex, JSON.parse(localStorage.getItem("bulkRecipes")));
+}if(event.target == document.getElementById("get-more-recipez")) {
+    console.log(document.getElementById("get-more-recipez"));
+    generateCardz(mainWindow.childNodes[1], currentRecipeIndex, JSON.parse(localStorage.getItem("bulkRecipes")));
 }
 if(event.target == document.getElementById("eat-me-button")) {
     console.log(event.target.dataset.recipeID);
@@ -205,7 +208,7 @@ function searchByIngredient() {
   }
   console.log(ingredientString);
   fetch(
-    `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${ingredientString}&number=10&ranking=1&ignorePantry=true`,
+    `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${ingredientString}&number=20&ranking=1&ignorePantry=true`,
     {
       method: "GET",
       headers: {
@@ -245,6 +248,8 @@ function displayRecipes(dataObject, startIndex, searchTerm) {
 
   console.log(dataObject);
 
+  // search by recipe name and search by igredient return objects with different formats, need to do a check to see which we have and run different generateCards functions to display them
+  if(dataObject.results){
   generateCards(secRow, startIndex, dataObject);
   //need to create a way to show the next five recipes on screen when they click this button
   var moreRecipes = document.createElement("div");
@@ -257,6 +262,21 @@ function displayRecipes(dataObject, startIndex, searchTerm) {
   nextSet.textContent = "More Recipes";
   nextSet.dataset.recipe = searchTerm;
   moreRecipes.appendChild(nextSet);
+}else {
+    console.log("generate ingred cards");
+    generateCardz(secRow, startIndex, dataObject);
+  var moreRecipes = document.createElement("div");
+  moreRecipes.classList = "row";
+  mainWindow.appendChild(moreRecipes);
+  var nextSet = document.createElement("button");
+  nextSet.classList = "btn waves-effect waves-light col s6 offset-s3";
+  nextSet.type = "submit";
+  nextSet.setAttribute("id", "get-more-recipez");
+  nextSet.textContent = "More Recipes";
+  nextSet.dataset.recipe = searchTerm;
+  moreRecipes.appendChild(nextSet);
+}
+  //need to create a way to show the next five recipes on screen when they click this button
 }
 
 //moved this for loop outside of the displayRecipes functions and made its own function in order to be able to call to generate more recipe cards
@@ -303,6 +323,95 @@ function generateCards(theParent, startHere, dataObject) {
     currentRecipeIndex += 5;
   }
 }
+
+//moved this for loop outside of the displayRecipes functions and made its own function in order to be able to call to generate more recipe cards
+function generateCards(theParent, startHere, dataObject) {
+  if (startHere <= 15) {
+    theParent.innerHTML = "";
+    for (let i = startHere; i < startHere + 5; i++) {
+      //debugger;
+      var colDiv = document.createElement("div");
+      colDiv.classList = "col s12 m4";
+      theParent.appendChild(colDiv);
+      var cardDiv = document.createElement("div");
+      cardDiv.classList = "card";
+      colDiv.appendChild(cardDiv);
+      var imgDiv = document.createElement("div");
+      imgDiv.classList = "card-image";
+      cardDiv.appendChild(imgDiv);
+      var image = document.createElement("img");
+      image.src = `https://spoonacular.com/recipeImages/${dataObject.results[i].id}-480x360.jpg`;
+      imgDiv.appendChild(image);
+      var cardTitle = document.createElement("h4");
+      cardTitle.classList = "card-title";
+      //cardTitle.style = "font-size:20px";
+      cardTitle.textContent = `${dataObject.results[i].title}`;
+      cardDiv.appendChild(cardTitle);
+      var contentDiv = document.createElement("div");
+      contentDiv.classList = "card-content";
+      cardDiv.appendChild(contentDiv);
+      var servings = document.createElement("p");
+      servings.textContent = `Servings: ${dataObject.results[i].servings}`;
+      contentDiv.appendChild(servings);
+      var minReady = document.createElement("p");
+      minReady.textContent = `Ready in : ${dataObject.results[i].readyInMinutes} Minutes`;
+      contentDiv.appendChild(minReady);
+
+      var addBtn = document.createElement("button");
+      addBtn.classList =
+        "btn-floating halfway-fab waves-effect waves-light green eat-me-button";
+      addBtn.dataset.recipeID = dataObject.results[i].id;
+      addBtn.innerHTML = `eat`;
+      imgDiv.appendChild(addBtn);
+    }
+    currentRecipeIndex += 5;
+  }
+}
+//same function as above for generating cards but changes where we are getting data from the object if we have a different query result
+function generateCardz(theParent, startHere, dataObject) {
+    if (startHere <= 15) {
+      theParent.innerHTML = "";
+      mainWindow.classList = "row";
+      ingredientSearch.classList = "row hide";
+      for (let i = startHere; i < startHere + 5; i++) {
+        //debugger;
+        var colDiv = document.createElement("div");
+        colDiv.classList = "col s6 m4";
+        theParent.appendChild(colDiv);
+        var cardDiv = document.createElement("div");
+        cardDiv.classList = "card";
+        colDiv.appendChild(cardDiv);
+        var imgDiv = document.createElement("div");
+        imgDiv.classList = "card-image";
+        cardDiv.appendChild(imgDiv);
+        var image = document.createElement("img");
+        image.src = `https://spoonacular.com/recipeImages/${dataObject[i].id}-480x360.jpg`;
+        imgDiv.appendChild(image);
+        var cardTitle = document.createElement("h4");
+        cardTitle.classList = "card-title";
+        //cardTitle.style = "font-size:20px";
+        cardTitle.textContent = `${dataObject[i].title}`;
+        cardDiv.appendChild(cardTitle);
+        var contentDiv = document.createElement("div");
+        contentDiv.classList = "card-content";
+        cardDiv.appendChild(contentDiv);
+        var servings = document.createElement("p");
+        servings.textContent = `Used ingredients: ${dataObject[i].usedIngredientCount}`;
+        contentDiv.appendChild(servings);
+        var minReady = document.createElement("p");
+        minReady.textContent = `Missed Ingredients : ${dataObject[i].missedIngredientCount}`;
+        contentDiv.appendChild(minReady);
+  
+        var addBtn = document.createElement("button");
+        addBtn.classList =
+          "btn-floating halfway-fab waves-effect waves-light green eat-me-button";
+        addBtn.dataset.recipeID = dataObject[i].id;
+        addBtn.innerHTML = `eat`;
+        imgDiv.appendChild(addBtn);
+      }
+      currentRecipeIndex += 5;
+    }
+  }
 // generates more detailed description of recipe with image, ingredient lists, and instructions, button with option to open the recipe page in a new window. should also create description for the wine pairing feature with an input field for wine budget and buttons to get wine or skip
 function displayRecipeDetails(dataObject) {
   console.log(dataObject);
@@ -490,7 +599,7 @@ mainWindow.addEventListener("click", function (event) {
       JSON.parse(localStorage.getItem("bulkRecipes"))
     );
   }
-  if (event.target == document.getElementById("eat-me-button")) {
+  if (event.target.matches(".eat-me-button")) {
     console.log(event.target.dataset.recipeID);
     getSpecificRecipe(event.target.dataset.recipeID);
   }
