@@ -207,7 +207,7 @@ function generateCards(theParent, startHere, dataObject) {
     for (let i = startHere; i < startHere + 5; i++) {
       //debugger;
       var colDiv = document.createElement("div");
-      colDiv.classList = "col s12 m4";
+      colDiv.classList = "col s12 m6 l4";
       theParent.appendChild(colDiv);
       var cardDiv = document.createElement("div");
       cardDiv.classList = "card";
@@ -252,7 +252,7 @@ function generateCardz(theParent, startHere, dataObject) {
       for (let i = startHere; i < startHere + 5; i++) {
         //debugger;
         var colDiv = document.createElement("div");
-        colDiv.classList = "col s6 m4";
+        colDiv.classList = "col s12 m6 l4";
         theParent.appendChild(colDiv);
         var cardDiv = document.createElement("div");
         cardDiv.classList = "card";

@@ -23,6 +23,10 @@
     max-height: 25px;
 }
 
+/* .card {
+    min-width:385px;
+} */
+
 @media screen and (max-width: 850px) {
     #home-btn {
         padding:0px;
@@ -37,8 +41,4 @@
         float:none;
         min-width:245px;
     }
-
-    /* #header h5 {
-
-    } */
 }
