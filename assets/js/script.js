@@ -8,6 +8,7 @@ var searchRecBtn = document.querySelector("#input-field");
 var recipSchBtn = document.querySelector("#recipe-search-btn")
 var ingredSchBtn = document.querySelector("#ingredient-search-btn")
 var ingredientSearch = document.querySelector("#ingredient-search")
+var recipIngredSchBtn = document.querySelector("#recipe-ingredient-btn")
 var currentRecipeIndex = 0;
 
 //HTML / CSS
@@ -127,7 +128,7 @@ console.log(pantry)
 //   // console.log(pantry)
 // })
 mainWindow.addEventListener('click', function(event){
-    console.log(event.target);
+    // console.log(event.target);
 if(event.target == document.getElementById("get-more-recipes")) {
     console.log(document.getElementById("get-more-recipes"));
     generateCards(mainWindow.childNodes[1], currentRecipeIndex, JSON.parse(localStorage.getItem("bulkRecipes")));
@@ -145,10 +146,10 @@ if(event.target == document.getElementById("netflix-button")) {
 }
 })
 
-pantrySaveEl.addEventListener('click', function(event){
-  savePantry();
-  console.log(pantry)
-})
+// pantrySaveEl.addEventListener('click', function(event){
+//   savePantry();
+//   console.log(pantry)
+// })
 
 // Create a submit event listener on the form element
 // handleFormSubmit(event));
@@ -207,6 +208,11 @@ recipSchBtn.addEventListener("click", function(event){
   recipeSearch();
 })
 
+recipIngredSchBtn.addEventListener('click', function(event){
+  event.preventDefault();
+  searchByIngredient();
+})
+
 
 mainWindow.addEventListener("submit", function (event) {
   event.preventDefault();
@@ -248,11 +254,11 @@ function getRecipes(searchTerm) {
     });
 }
 // calls spoonacular api for recipes based on search by ingredients
-function searchByIngredient(ingredientArray) {
+function searchByIngredient() {
   var ingredientString = "";
-  for (let i = 0; i < ingredientArray.length; i++) {
-    ingredientString += ingredientArray[i];
-    if (i != ingredientArray.length - 1) {
+  for (let i = 0; i < pantry.length; i++) {
+    ingredientString += pantry[i];
+    if (i != pantry.length - 1) {
       ingredientString += "%2C";
     }
   }
