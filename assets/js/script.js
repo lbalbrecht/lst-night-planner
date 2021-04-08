@@ -433,13 +433,13 @@ function displayRecipeDetails(dataObject) {
 
   // add the recipe image
   var imageCol = document.createElement("img");
-  imageCol.classList = "col s6";
+  imageCol.classList = "col s12 m6";
   imageCol.src = dataObject.image;
   secRow.appendChild(imageCol);
 
   // add a column and add a bunch of details details
   var descCol = document.createElement("div");
-  descCol.classList = "col s6";
+  descCol.classList = "col s12 m6";
   secRow.appendChild(descCol);
 
   var vegan = document.createElement("p");
