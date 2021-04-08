@@ -207,7 +207,7 @@ function generateCards(theParent, startHere, dataObject) {
     for (let i = startHere; i < startHere + 5; i++) {
       //debugger;
       var colDiv = document.createElement("div");
-      colDiv.classList = "col s12 m4";
+      colDiv.classList = "col s12 m6 l4";
       theParent.appendChild(colDiv);
       var cardDiv = document.createElement("div");
       cardDiv.classList = "card";
@@ -252,7 +252,7 @@ function generateCardz(theParent, startHere, dataObject) {
       for (let i = startHere; i < startHere + 5; i++) {
         //debugger;
         var colDiv = document.createElement("div");
-        colDiv.classList = "col s6 m4";
+        colDiv.classList = "col s12 m6 l4";
         theParent.appendChild(colDiv);
         var cardDiv = document.createElement("div");
         cardDiv.classList = "card";
@@ -310,13 +310,13 @@ function displayRecipeDetails(dataObject) {
 
   // add the recipe image
   var imageCol = document.createElement("img");
-  imageCol.classList = "col s6";
+  imageCol.classList = "col s12 m6";
   imageCol.src = dataObject.image;
   secRow.appendChild(imageCol);
 
   // add a column and add a bunch of details details
   var descCol = document.createElement("div");
-  descCol.classList = "col s6";
+  descCol.classList = "col s12 m6";
   secRow.appendChild(descCol);
 
   var vegan = document.createElement("p");
