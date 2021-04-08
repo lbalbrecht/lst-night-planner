@@ -24,11 +24,18 @@
 }
 
 @media screen and (max-width: 850px) {
+    #home-btn {
+        padding:0px;
+        min-width:235px;
+    }
     #recipe-search-btn {
         float:none;
+        min-width:175px;
+        margin-bottom:20px;
     }
     #ingredient-search-btn {
         float:none;
+        min-width:245px;
     }
 
     /* #header h5 {
