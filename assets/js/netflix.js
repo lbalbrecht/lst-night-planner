@@ -130,6 +130,11 @@ function changeMorS () {  //this function checks too see if the switch to toggle
     console.log(MorS.checked);
 }
 
+function replaceImage(imageID) {
+    $(imageID).attr("src", "http://via.placeholder.com/200x300.png?text=No+poster+available");
+    console.log("changed picture from null");
+}
+
 function generateNetflixShow(event, NetflixList, varStart) {  //this function generates cards to display the netflix results.  The NetflixList is an array with all the info.  varStart is the index starting point to display 4 results.
     if (event) {
         event.preventDefault();
@@ -146,7 +151,7 @@ function generateNetflixShow(event, NetflixList, varStart) {  //this function ge
         tempText += `
    <div class="card col netflix s3">
    <div class="card-image waves-effect waves-block waves-light">
-   <img class="activator" src="`+NetflixList[curI].image+`" onerror="this.style.display='none'">
+   <img class="activator" src="`+NetflixList[curI].image+`" onerror="replaceImage('#img-`+curI+`')" id="img-`+curI+`">
    </div>
    <div class="card-content">
      <span class="card-title activator grey-text text-darken-4"><i class="material-icons right">more_vert</i>`+NetflixList[curI].title+`</span>
