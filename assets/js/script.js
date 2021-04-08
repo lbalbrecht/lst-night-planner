@@ -410,6 +410,68 @@ function displayWines(parentEl, dataObject) {
   }
 }
 
+// the final page generates a summary of the dinner, wine, and netflix selections that the user has made so far. clicking on a section provides an overview/summary of the specific option the user selected. button at bottom of the screen returns user to homepage to start over.
+function summarizeEvening() {
+    mainWindow.innerHTML = "";
+    var yourRecipe = JSON.parse(localStorage.getItem("chosenRecipe"));
+    var yourMovie = JSON.parse(localStorage.getItem("chosenMovie"));
+  //create a new row to house the recipe name
+  var newRow = document.createElement("div");
+  newRow.classList = "row center-align";
+  mainWindow.appendChild(newRow);
+  var description = document.createElement("h4");
+  description.textContent = `Below is a summary of your Quarantine and Chill:`;
+  description.classList = "col s8 offset-s2";
+  newRow.appendChild(description);
+
+  var secRow = document.createElement("div");
+  secRow.classList = "row center-align";
+  mainWindow.appendChild(secRow);
+
+  // add the recipe image
+  var imageCol = document.createElement("img");
+  imageCol.classList = "col s6";
+  imageCol.src = yourRecipe.image;
+  secRow.appendChild(imageCol);
+
+  var descCol = document.createElement("div");
+  descCol.classList = "col s6";
+  secRow.appendChild(descCol);
+
+  // provide recipe name and link
+  var recipeName = document.createElement("h5");
+    recipeName.textContent = yourRecipe.title;
+  descCol.appendChild(recipeName);
+
+  var fullRecipes = document.createElement("h5");
+  fullRecipes.innerHTML = `<br>Full Recipe can be found at: <a href=${yourRecipe.sourceUrl} target="_blank">${yourRecipe.sourceName}</a>`;
+  descCol.appendChild(fullRecipes);
+
+  var thirdRow = document.createElement("div");
+  thirdRow.classList = "row center-align";
+  mainWindow.appendChild(thirdRow);
+
+  var imageCol = document.createElement("img");
+  imageCol.classList = "col s6";
+  imageCol.src = yourMovie.image;
+  thirdRow.appendChild(imageCol);
+
+  var descCol = document.createElement("div");
+  descCol.classList = "col s6";
+  thirdRow.appendChild(descCol);
+
+  var movieName = document.createElement("h5");
+    movieName.textContent = `${yourMovie.title} ${yourMovie.year}`;
+  descCol.appendChild(movieName);
+
+  var movieScore = document.createElement("h5");
+    movieScore.textContent = `IMDB Rating: ${yourMovie.IMDB}`;
+  descCol.appendChild(movieScore);
+  
+}
+//summarizeEvening();
+
+
 recipSchBtn.addEventListener("click", function (event) {
   event.preventDefault();
   recipeSearch();
@@ -550,7 +612,7 @@ ingredientBtnEl.addEventListener('click', function(event){
       displayWines(mainWindow.childNodes[2], JSON.parse(localStorage.getItem("chosenRecipe")));
   }
   if(event.target == document.getElementById("netflix-button")) {
-      console.log("lets netflix");
+      generateNetflixform();
   }
   })
   
@@ -580,6 +642,9 @@ ingredientBtnEl.addEventListener('click', function(event){
   
   });
   
+
+
+
 // function displayPantry(){
 //   // debugger
 //   var pantryList = localStorage.getItem("pantry")
@@ -625,10 +690,3 @@ ingredientBtnEl.addEventListener('click', function(event){
 // Create a submit event listener on the form element
 // handleFormSubmit(event));
 
-//searchByIngredient(["dogs","cats","lions","tigers","bears"-]);
-//
-
-//displayRecipeDetails(JSON.parse(localStorage.getItem("chosenRecipe")));
-
-//summarizeEvening()
-// the final page generates a summary of the dinner, wine, and netflix selections that the user has made so far. clicking on a section provides an overview/summary of the specific option the user selected. button at bottom of the screen returns user to homepage to start over.
