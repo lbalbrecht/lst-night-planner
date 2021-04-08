@@ -13,6 +13,7 @@
 
 .netflix {
     height: 400px;
+    max-width:300px;
     position:relative;
     font-size: 15px;
 }
