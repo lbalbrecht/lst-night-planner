@@ -57,7 +57,7 @@ There are a bunch of different ways we can help you find something to watch on N
 function getNetflixResults() {  //curates the search form results and makes them query friendly and checks for minor issues
 var DateAfter = document.querySelector('#StartYear').value;
 var DateBefore = document.querySelector('#EndYear').value;
-var Genre = "";
+var Genre = "";  //discovered this is very difficult to implement and having issues with materialize CSS so defaulting to nothing
 var IMDBscore = document.querySelector('#netflix-imdb').value;
 var ActorName = document.querySelector('#Actor').value;
 var MorS = document.querySelector('#MorS').checked; 
@@ -78,7 +78,7 @@ console.log(`Type: `+MorS);
 console.log(`Actor: `+ActorName); 
 console.log(`Keyword: `+Keyword); 
 
-queryNetflix(DateBefore, DateAfter, Genre, IMDBscore, ActorName, MorS, Keyword);
+queryNetflix(DateBefore, DateAfter, Genre, IMDBscore, ActorName, MorS, Keyword);  //with all the search fields cleaned up, we call the API and populate our array
 }
 
 function queryNetflix (DateBefore, DateAfter, Genre, IMDBscore, ActorName, MorS, Keyword) {  //query the Unogsng API with the set criteria.  If left blank, it will search for default results.
@@ -130,7 +130,7 @@ fetch (defaultSearch, {
 });
 }
 
-function changeMorS () {  //this function checks too see if the switch to toggle between movies/series is checked.
+function changeMorS () {  //this function checks to see if the switch to toggle between movies/series is checked.
     var MorS = document.querySelector('#MorS'); 
 
     if (MorS.checked == true) {MorS.checked = false} else MorS.checked = true;
@@ -149,7 +149,8 @@ function generateNetflixShow(event, NetflixList, varStart) {  //this function ge
     var tempText = `
     <div class="row flow-text">
 `
-    var curI;
+
+var curI;
     console.log(NetflixList);
     for (var i=1; i<5; i++) {
       curI = varStart+i;
@@ -165,7 +166,7 @@ function generateNetflixShow(event, NetflixList, varStart) {  //this function ge
    </div>
    <div class="save">
     year: `+NetflixList[curI].year+` [`+NetflixList[curI].IMDB+`/10]
-    <span class="right-align"><p><a href="#" onclick="saveNetflix(`+NetflixList[curI].nfid+`)">SAVE</a></span>
+    <span class="right-align"><p><a href="#" onclick="saveNetflix(`+curI+`)">SAVE</a></span>
    </div>
    <div class="card-reveal">
      <span class="card-title grey-text text-darken-4">`+NetflixList[curI].title+`<i class="material-icons right">close</i></span>
@@ -189,6 +190,8 @@ function generateNetflixShow(event, NetflixList, varStart) {  //this function ge
   mainwindow.innerHTML = tempText;
 }
 
-function saveNetflix(nfid) {  // once the user clicks the SAVE button, determines what happens to the Netflix ID chosen.
-    console.log(nfid+` was chosen`)
+function saveNetflix(curI) {  // once the user clicks the SAVE button, determines what happens to the Netflix ID chosen.
+    console.log(NetflixList[curI]+` was chosen`);
+    localStorage.setItem("chosenMovie", JSON.stringify(NetflixList[curI])); //saves the chosen movie to localstorage
+    summarizeEvening();
 }
