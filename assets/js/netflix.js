@@ -1,8 +1,12 @@
 var NetflixList;
-var mainwindow = document.getElementById("landing-page");  //chooses where to show where the results of the netflix section
+var mainwindow = document.getElementById("main-window");  //chooses where to show where the results of the netflix section
 
 function generateNetflixform() {  //creates the initial landing page for the netflix module.  Generates a form for the user to narrow their criteria.
 var tempText = `
+<div class="col s12 m10 center-align" id="header">
+<h5>Welcome to Quarantine and Chill!</5>
+    <div class="card-panel" id="landing-page">
+
 There are a bunch of different ways we can help you find something to watch on Netflix! In the form below, enter all the criteria you want met and we'll do the rest; or you can leave it empty.
 <form id="netflixForm">
     <p class="col s4">
@@ -42,6 +46,9 @@ There are a bunch of different ways we can help you find something to watch on N
     </div>
 </div>
 </form>
+</div>
+
+</div>
 </div>
 `
     mainwindow.innerHTML = tempText;  //populates the section with all the Netflix HTML code entered into tempText
@@ -130,6 +137,11 @@ function changeMorS () {  //this function checks too see if the switch to toggle
     console.log(MorS.checked);
 }
 
+function replaceImage(imageID) {
+    $(imageID).attr("src", "http://via.placeholder.com/200x300.png?text=No+poster+available");
+    console.log("changed picture from null");
+}
+
 function generateNetflixShow(event, NetflixList, varStart) {  //this function generates cards to display the netflix results.  The NetflixList is an array with all the info.  varStart is the index starting point to display 4 results.
     if (event) {
         event.preventDefault();
@@ -146,7 +158,7 @@ function generateNetflixShow(event, NetflixList, varStart) {  //this function ge
         tempText += `
    <div class="card col netflix s3">
    <div class="card-image waves-effect waves-block waves-light">
-   <img class="activator" src="`+NetflixList[curI].image+`" onerror="this.style.display='none'">
+   <img class="activator" src="`+NetflixList[curI].image+`" onerror="replaceImage('#img-`+curI+`')" id="img-`+curI+`">
    </div>
    <div class="card-content">
      <span class="card-title activator grey-text text-darken-4"><i class="material-icons right">more_vert</i>`+NetflixList[curI].title+`</span>
