@@ -126,7 +126,7 @@ function searchByIngredient() {
       ingredientString += "%2C";
     }
   }
-  console.log(ingredientString);
+  //console.log(ingredientString);
   fetch(
     `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${ingredientString}&number=20&ranking=1&ignorePantry=true`,
     {
@@ -167,7 +167,7 @@ function displayRecipes(dataObject, startIndex, searchTerm) {
   secRow.classList = "row center-align";
   mainWindow.appendChild(secRow);
 
-  console.log(dataObject);
+  //console.log(dataObject);
 
   // search by recipe name and search by igredient return objects with different formats, need to do a check to see which we have and run different generateCards functions to display them
   if(dataObject.results){
@@ -184,7 +184,7 @@ function displayRecipes(dataObject, startIndex, searchTerm) {
   nextSet.dataset.recipe = searchTerm;
   moreRecipes.appendChild(nextSet);
 }else {
-    console.log("generate ingred cards");
+    //console.log("generate ingred cards");
     generateCardz(secRow, startIndex, dataObject);
   var moreRecipes = document.createElement("div");
   moreRecipes.classList = "row";
@@ -291,7 +291,7 @@ function generateCardz(theParent, startHere, dataObject) {
 
 // generates more detailed description of recipe with image, ingredient lists, and instructions, button with option to open the recipe page in a new window. should also create description for the wine pairing feature with an input field for wine budget and buttons to get wine or skip
 function displayRecipeDetails(dataObject) {
-  console.log(dataObject);
+  //console.log(dataObject);
   mainWindow.innerHTML = "";
 
   //create a new row to house the recipe name
@@ -480,11 +480,11 @@ recipSchBtn.addEventListener("click", function (event) {
 mainWindow.addEventListener("submit", function (event) {
   event.preventDefault();
   if (document.getElementById("recipe-search-btn")) {
-    console.log(document.getElementById("recipe-search-btn").value);
+    //console.log(document.getElementById("recipe-search-btn").value);
     getRecipes(document.getElementById("recipe-search-btn").value);
   }
   if (document.getElementById("recipeSearchButton")) {
-    console.log(document.getElementById("recipeToSearch").value);
+    //console.log(document.getElementById("recipeToSearch").value);
     getRecipes(document.getElementById("recipeToSearch").value);
   }
 });
@@ -498,7 +498,7 @@ ingredientBtnEl.addEventListener("click", function (event) {
   event.preventDefault();
 
   var ingredient = pantryFormEl.value;
-  console.log(pantryFormEl.value);
+  //console.log(pantryFormEl.value);
 
   if (!ingredient) {
     console.log("No ingredients filled out in form!");
@@ -515,7 +515,7 @@ ingredientBtnEl.addEventListener("click", function (event) {
     event.preventDefault();
     pantryListEl.removeChild(listItemEl);
     pantry.splice(pantry.indexOf(event.target));
-    console.log(pantry);
+    //console.log(pantry);
   });
 
   listItemEl.appendChild(deleteBtnEl);
@@ -526,32 +526,40 @@ ingredientBtnEl.addEventListener("click", function (event) {
 
   pantryFormEl.value = "";
 
-  console.log(pantry);
+  //console.log(pantry);
 });
 
+//click listeners within the main window used to run functions and generate pages based on what has been clicked
 mainWindow.addEventListener("click", function (event) {
-  console.log(event.target);
+  //console.log(event.target);
   if (event.target == document.getElementById("get-more-recipes")) {
-    console.log(document.getElementById("get-more-recipes"));
+   // console.log(document.getElementById("get-more-recipes"));
     generateCards(
+      mainWindow.childNodes[1],
+      currentRecipeIndex,
+      JSON.parse(localStorage.getItem("bulkRecipes"))
+    );
+  }if (event.target == document.getElementById("get-more-recipez")) {
+    //console.log(document.getElementById("get-more-recipez"));
+    generateCardz(
       mainWindow.childNodes[1],
       currentRecipeIndex,
       JSON.parse(localStorage.getItem("bulkRecipes"))
     );
   }
   if (event.target.matches(".eat-me-button")) {
-    console.log(event.target.dataset.recipeID);
+    //console.log(event.target.dataset.recipeID);
     getSpecificRecipe(event.target.dataset.recipeID);
   }
   if (event.target == document.getElementById("wine-button")) {
-    console.log("clicked it");
+    //console.log("clicked it");
     displayWines(
       mainWindow.childNodes[2],
       JSON.parse(localStorage.getItem("chosenRecipe"))
     );
   }
   if (event.target == document.getElementById("netflix-button")) {
-    console.log("lets netflix");
+    generateNetflixform();
   }
 });
 //create a new list item based upon what the user put into the add ingredient field and populates it to the screen, if the user clicks on the X button the item is removed from the list and the screen. These ingredients are saved to a variable to pass to the getRecipes function
@@ -560,7 +568,7 @@ ingredientBtnEl.addEventListener('click', function(event){
     event.preventDefault();
     
     var ingredient = pantryFormEl.value;
-    console.log(pantryFormEl.value);
+    //console.log(pantryFormEl.value);
     
     if (!ingredient) {
       console.log('No ingredients filled out in form!');
@@ -577,7 +585,7 @@ ingredientBtnEl.addEventListener('click', function(event){
     event.preventDefault();
     pantryListEl.removeChild(listItemEl);
     pantry.splice(pantry.indexOf(event.target))
-    console.log(pantry)
+    //console.log(pantry)
   })
     
     listItemEl.appendChild(deleteBtnEl);
@@ -589,31 +597,8 @@ ingredientBtnEl.addEventListener('click', function(event){
   
   pantryFormEl.value = ('');
   
-  console.log(pantry)
+  //console.log(pantry)
   
-  })
-  
-  //click  events occuring in our main window to load new pages based upon which button/item has been clicked
-  mainWindow.addEventListener('click', function(event){
-      // console.log(event.target);
-  if(event.target == document.getElementById("get-more-recipes")) {
-      console.log(document.getElementById("get-more-recipes"));
-      generateCards(mainWindow.childNodes[1], currentRecipeIndex, JSON.parse(localStorage.getItem("bulkRecipes")));
-  }if(event.target == document.getElementById("get-more-recipez")) {
-      console.log(document.getElementById("get-more-recipez"));
-      generateCardz(mainWindow.childNodes[1], currentRecipeIndex, JSON.parse(localStorage.getItem("bulkRecipes")));
-  }
-  if(event.target == document.getElementById("eat-me-button")) {
-      console.log(event.target.dataset.recipeID);
-      getSpecificRecipe(event.target.dataset.recipeID);
-  }
-  if(event.target == document.getElementById("wine-button")) {
-      console.log("clicked it");
-      displayWines(mainWindow.childNodes[2], JSON.parse(localStorage.getItem("chosenRecipe")));
-  }
-  if(event.target == document.getElementById("netflix-button")) {
-      generateNetflixform();
-  }
   })
   
   // calls recipesearch function when the button on the main screen is clicked
@@ -632,19 +617,16 @@ ingredientBtnEl.addEventListener('click', function(event){
   mainWindow.addEventListener("submit", function (event) {
     event.preventDefault();
     if(document.getElementById("recipe-search-btn")) {
-    console.log(document.getElementById("recipe-search-btn").value);
+   // console.log(document.getElementById("recipe-search-btn").value);
     getRecipes(document.getElementById("recipe-search-btn").value);
   }
   if(document.getElementById("recipeSearchButton")) {
-      console.log(document.getElementById("recipeToSearch").value);
+      //console.log(document.getElementById("recipeToSearch").value);
       getRecipes(document.getElementById("recipeToSearch").value);
   }
   
   });
   
-
-
-
 // function displayPantry(){
 //   // debugger
 //   var pantryList = localStorage.getItem("pantry")
