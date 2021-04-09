@@ -70,13 +70,13 @@ if (Keyword != " ")   {    Keyword = `&query=`+Keyword;} else { Keyword="";}
 if (MorS == false) {MorS = "&type=movie";} else MorS = "&type=series"
 
 //verify in console.log that the data is showing up accurately.
-console.log(`date start: `+DateAfter); 
-console.log(`date before: `+DateBefore); 
-console.log(`genre: `+Genre); 
-console.log(`IMDBscore: `+IMDBscore);
-console.log(`Type: `+MorS);
-console.log(`Actor: `+ActorName); 
-console.log(`Keyword: `+Keyword); 
+// console.log(`date start: `+DateAfter); 
+// console.log(`date before: `+DateBefore); 
+// console.log(`genre: `+Genre); 
+// console.log(`IMDBscore: `+IMDBscore);
+// console.log(`Type: `+MorS);
+// console.log(`Actor: `+ActorName); 
+// console.log(`Keyword: `+Keyword); 
 
 queryNetflix(DateBefore, DateAfter, Genre, IMDBscore, ActorName, MorS, Keyword);  //with all the search fields cleaned up, we call the API and populate our array
 }
@@ -86,7 +86,7 @@ function queryNetflix (DateBefore, DateAfter, Genre, IMDBscore, ActorName, MorS,
 // var defaultSearch = "https://unogsng.p.rapidapi.com/search?type=movie&start_year=1972&orderby=rating&audiosubtitle_andor=and&start_rating=5&limit=100&subtitle=english&countrylist=78%2C46&audio=english&country_andorunique=unique&offset=0&end_year=2019";
 
   var defaultSearch = `https://unogsng.p.rapidapi.com/search?start_year=`+DateAfter+`&orderby=rating&limit=100&subtitle=english&countrylist=46&offset=0&end_year=`+DateBefore+IMDBscore+MorS+Keyword;
-  console.log(defaultSearch);
+  //console.log(defaultSearch);
 
 //  var defaultSearch = `https://unogsng.p.rapidapi.com/search?start_year=`+DateAfter+`&orderby=rating&limit=100&countrylist=78%2C46&audio=english&country_andorunique=unique&offset=0&end_year=`+DateBefore;
 
@@ -101,7 +101,7 @@ fetch (defaultSearch, {
     return response.json();
 })
 .then(function (movieDat) {
-    console.log(movieDat);
+    //console.log(movieDat);
     NetflixList=[];
     for (var i = 0; i < movieDat.results.length; i++) {
         var movie = {
@@ -119,10 +119,10 @@ fetch (defaultSearch, {
             movie.runtime=Math.round(movie.runtime / 60);
             movie.runtime+="min";
         }
-        if (movie.image == "") {movie.image="http://via.placeholder.com/200x300.png?text=No+poster+available"}
+        if (movie.image == "") {movie.image="https://via.placeholder.com/200x300.png?text=No+poster+available"}
         NetflixList.push(movie);
     }
-    console.log(NetflixList);
+    //console.log(NetflixList);
     generateNetflixShow("", NetflixList, -1);
 })
 .catch(err => {
@@ -138,7 +138,7 @@ function changeMorS () {  //this function checks to see if the switch to toggle 
 }
 
 function replaceImage(imageID) {
-    $(imageID).attr("src", "http://via.placeholder.com/200x300.png?text=No+poster+available");
+    $(imageID).attr("src", "https://via.placeholder.com/200x300.png?text=No+poster+available");
     console.log("changed picture from null");
 }
 
@@ -151,7 +151,7 @@ function generateNetflixShow(event, NetflixList, varStart) {  //this function ge
 `
 
 var curI;
-    console.log(NetflixList);
+    //console.log(NetflixList);
     for (var i=1; i<5; i++) {
       curI = varStart+i;
       if (curI < NetflixList.length) {
@@ -191,7 +191,7 @@ var curI;
 }
 
 function saveNetflix(curI) {  // once the user clicks the SAVE button, determines what happens to the Netflix ID chosen.
-    console.log(NetflixList[curI]+` was chosen`);
+    //console.log(NetflixList[curI]+` was chosen`);
     localStorage.setItem("chosenMovie", JSON.stringify(NetflixList[curI])); //saves the chosen movie to localstorage
     summarizeEvening();
 }
