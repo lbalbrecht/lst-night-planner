@@ -53,7 +53,7 @@ Once the user has chosen a recipe and a movie, they will be presented with a sum
 ## Contributors
 
 * Leighton Albrecht
-* Trevor Eck
+* Trevor Eckberg
 * Sung Kim
 
 [View Github Repository](https://github.com/lbalbrecht/lst-night-planner)
